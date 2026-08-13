@@ -1,0 +1,88 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\DriverRequest;
+use App\Models\Branch;
+use App\Models\Driver;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
+class DriverController extends Controller
+{
+    public function index(Request $request): View
+    {
+        $drivers = Driver::query()
+            ->with('branch')
+            ->withCount('ratings')
+            ->when($request->string('search')->toString(), function ($query, string $search): void {
+                $query->where(function ($query) use ($search): void {
+                    $query->where('full_name', 'like', "%{$search}%")
+                        ->orWhere('nickname', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('sim_number', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->integer('branch_id'), fn ($query, int $branchId) => $query->where('branch_id', $branchId))
+            ->when($request->string('status')->toString(), fn ($query, string $status) => $query->where('status', $status))
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.drivers.index', ['drivers' => $drivers, 'branches' => Branch::query()->orderBy('name')->get()]);
+    }
+
+    public function create(): View
+    {
+        return view('admin.drivers.create', ['driver' => new Driver(), 'branches' => Branch::query()->orderBy('name')->get()]);
+    }
+
+    public function store(DriverRequest $request): RedirectResponse
+    {
+        $driver = Driver::query()->create($request->validated());
+
+        return redirect()->route('admin.drivers.show', $driver)->with('status', 'Driver berhasil dibuat.');
+    }
+
+    public function show(Driver $driver): View
+    {
+        $driver->load('branch')->loadCount('ratings');
+
+        return view('admin.drivers.show', compact('driver'));
+    }
+
+    public function edit(Driver $driver): View
+    {
+        return view('admin.drivers.edit', ['driver' => $driver, 'branches' => Branch::query()->orderBy('name')->get()]);
+    }
+
+    public function update(DriverRequest $request, Driver $driver): RedirectResponse
+    {
+        $driver->update($request->validated());
+
+        return redirect()->route('admin.drivers.show', $driver)->with('status', 'Driver berhasil diperbarui.');
+    }
+
+    public function toggleStatus(Driver $driver): RedirectResponse
+    {
+        $driver->update(['status' => $driver->status === Driver::STATUS_ACTIVE ? Driver::STATUS_INACTIVE : Driver::STATUS_ACTIVE]);
+
+        return back()->with('status', 'Status driver berhasil diperbarui.');
+    }
+
+    public function destroy(Driver $driver): RedirectResponse
+    {
+        if ($driver->ratings()->exists()) {
+            $driver->update(['status' => Driver::STATUS_INACTIVE]);
+
+            return back()->with('status', 'Driver sudah memiliki rating, jadi dinonaktifkan.');
+        }
+
+        $driver->delete();
+
+        return redirect()->route('admin.drivers.index')->with('status', 'Driver berhasil dihapus.');
+    }
+}
