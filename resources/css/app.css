@@ -1011,3 +1011,251 @@ button {
         grid-template-columns: repeat(5, minmax(0, 1fr));
     }
 }
+.passenger-flow {
+    display: grid;
+    gap: 16px;
+    margin: 0 auto;
+    max-width: 520px;
+    min-height: 100vh;
+    padding: 18px;
+}
+
+.passenger-progress {
+    display: grid;
+    gap: 6px;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.passenger-progress div {
+    align-items: center;
+    color: var(--color-muted);
+    display: grid;
+    gap: 5px;
+    justify-items: center;
+}
+
+.passenger-progress span {
+    align-items: center;
+    background: #dbe7f3;
+    border-radius: 50%;
+    display: inline-flex;
+    font-size: 12px;
+    font-weight: 800;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.passenger-progress .is-active span {
+    background: var(--color-blue-600);
+    color: #fff;
+}
+
+.passenger-progress small {
+    font-size: 10px;
+    font-weight: 800;
+}
+
+.vehicle-focus-card,
+.passenger-assessment-card,
+.passenger-success-card {
+    align-self: start;
+}
+
+.passenger-image-placeholder,
+.driver-profile-large,
+.success-mark {
+    align-items: center;
+    background: var(--color-sky-50);
+    border-radius: 8px;
+    color: var(--color-blue-600);
+    display: flex;
+    font-size: 42px;
+    font-weight: 900;
+    height: 160px;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.driver-profile-large,
+.success-mark {
+    border-radius: 50%;
+    height: 112px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 112px;
+}
+
+.passenger-info-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 18px 0;
+}
+
+.passenger-info-grid div {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 10px;
+}
+
+.passenger-info-grid span,
+.driver-choice-card span {
+    color: var(--color-muted);
+    display: block;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.passenger-info-grid strong {
+    display: block;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+.passenger-primary,
+.passenger-secondary {
+    align-items: center;
+    border-radius: 8px;
+    display: inline-flex;
+    font-weight: 900;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 16px;
+    width: 100%;
+}
+
+.passenger-primary {
+    background: var(--color-blue-600);
+    color: #fff;
+}
+
+.passenger-secondary {
+    border: 1px solid var(--color-border);
+    background: #fff;
+    color: var(--color-navy-800);
+}
+
+.passenger-actions {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 18px;
+}
+
+.driver-choice-list,
+.assessment-group {
+    display: grid;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+.driver-choice-card {
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+}
+
+.driver-avatar {
+    align-items: center;
+    background: var(--color-blue-600);
+    border-radius: 50%;
+    color: #fff;
+    display: flex;
+    flex: 0 0 44px;
+    font-weight: 900;
+    height: 44px;
+    justify-content: center;
+}
+
+.assessment-group h2 {
+    font-size: 18px;
+    margin: 18px 0 0;
+}
+
+.passenger-question {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    display: grid;
+    gap: 10px;
+    padding: 14px;
+}
+
+.question-title {
+    font-weight: 900;
+    line-height: 1.4;
+}
+
+.question-title span,
+.passenger-error {
+    color: #b42318;
+}
+
+.passenger-rating {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.passenger-rating input {
+    position: absolute;
+    opacity: 0;
+}
+
+.passenger-rating span {
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    display: flex;
+    font-weight: 900;
+    height: 42px;
+    justify-content: center;
+}
+
+.passenger-rating input:checked + span {
+    background: var(--color-blue-600);
+    border-color: var(--color-blue-600);
+    color: #fff;
+}
+
+.passenger-choice {
+    display: grid;
+    gap: 9px;
+}
+
+.passenger-choice label {
+    align-items: center;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    display: flex;
+    gap: 10px;
+    padding: 11px;
+}
+
+.passenger-question input[type="text"],
+.passenger-question textarea {
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+}
+
+.passenger-success-card {
+    text-align: center;
+}
+
+.success-mark {
+    background: rgba(14, 159, 110, 0.12);
+    color: var(--color-success);
+    font-size: 52px;
+}
+
+@media (max-width: 430px) {
+    .passenger-flow { padding: 14px; }
+    .passenger-info-grid,
+    .passenger-actions { grid-template-columns: 1fr; }
+    .passenger-progress small { display: none; }
+}

@@ -1,0 +1,110 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\Branch;
+use App\Models\Driver;
+use App\Models\Question;
+use App\Models\Rating;
+use App\Models\Vehicle;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class PassengerFlowTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_passenger_can_complete_flow_from_qr_to_success(): void
+    {
+        $branch = Branch::factory()->create();
+        $vehicle = Vehicle::factory()->for($branch)->create(['status' => Vehicle::STATUS_ACTIVE]);
+        $driver = Driver::factory()->for($branch)->create(['status' => Driver::STATUS_ACTIVE]);
+        $driverRating = Question::factory()->create(['target_type' => Question::TARGET_DRIVER, 'answer_type' => Question::TYPE_RATING, 'sort_order' => 1, 'status' => Question::STATUS_ACTIVE]);
+        $yesNo = Question::factory()->create(['target_type' => Question::TARGET_VEHICLE, 'answer_type' => Question::TYPE_YES_NO, 'sort_order' => 2, 'status' => Question::STATUS_ACTIVE]);
+        $choice = Question::factory()->create(['target_type' => Question::TARGET_VEHICLE, 'answer_type' => Question::TYPE_MULTIPLE_CHOICE, 'sort_order' => 3, 'status' => Question::STATUS_ACTIVE]);
+        $option = $choice->options()->create(['option_text' => 'AC', 'sort_order' => 1]);
+
+        $this->get(route('passenger.rating.entry', $vehicle->qr_token))->assertOk()->assertSee($vehicle->police_number);
+        $this->get(route('passenger.rating.drivers', $vehicle->qr_token))->assertOk()->assertSee($driver->full_name);
+        $this->get(route('passenger.rating.driver', [$vehicle->qr_token, $driver]))->assertOk()->assertSee($driver->full_name);
+        $this->get(route('passenger.rating.assessment', [$vehicle->qr_token, $driver]))->assertOk()->assertSee($driverRating->question)->assertSee($yesNo->question);
+
+        $response = $this->post(route('passenger.rating.submit', [$vehicle->qr_token, $driver]), [
+            'answers' => [
+                $driverRating->id => '5',
+                $yesNo->id => '1',
+                $choice->id => (string) $option->id,
+            ],
+        ]);
+
+        $rating = Rating::query()->firstOrFail();
+        $response->assertRedirect(route('passenger.rating.success', [$vehicle->qr_token, $rating]));
+        $this->assertSame($branch->id, $rating->branch_id);
+        $this->assertSame($vehicle->id, $rating->vehicle_id);
+        $this->assertSame($driver->id, $rating->driver_id);
+        $this->assertCount(3, $rating->answers);
+        $this->get(route('passenger.rating.success', [$vehicle->qr_token, $rating]))->assertOk()->assertSee('Terima Kasih');
+    }
+
+    public function test_driver_selection_only_shows_active_drivers_from_vehicle_branch(): void
+    {
+        $branch = Branch::factory()->create();
+        $otherBranch = Branch::factory()->create();
+        $vehicle = Vehicle::factory()->for($branch)->create(['status' => Vehicle::STATUS_ACTIVE]);
+        $activeSameBranch = Driver::factory()->for($branch)->create(['full_name' => 'Driver Satu Cabang', 'status' => Driver::STATUS_ACTIVE]);
+        $inactiveSameBranch = Driver::factory()->for($branch)->create(['full_name' => 'Driver Nonaktif', 'status' => Driver::STATUS_INACTIVE]);
+        $otherBranchDriver = Driver::factory()->for($otherBranch)->create(['full_name' => 'Driver Cabang Lain', 'status' => Driver::STATUS_ACTIVE]);
+
+        $this->get(route('passenger.rating.drivers', $vehicle->qr_token))
+            ->assertOk()
+            ->assertSee($activeSameBranch->full_name)
+            ->assertDontSee($inactiveSameBranch->full_name)
+            ->assertDontSee($otherBranchDriver->full_name);
+
+        $this->get(route('passenger.rating.driver', [$vehicle->qr_token, $otherBranchDriver]))->assertNotFound();
+    }
+
+    public function test_assessment_only_shows_active_questions_ordered(): void
+    {
+        $branch = Branch::factory()->create();
+        $vehicle = Vehicle::factory()->for($branch)->create(['status' => Vehicle::STATUS_ACTIVE]);
+        $driver = Driver::factory()->for($branch)->create(['status' => Driver::STATUS_ACTIVE]);
+        Question::factory()->create(['question' => 'Ketiga', 'sort_order' => 3, 'status' => Question::STATUS_ACTIVE]);
+        Question::factory()->create(['question' => 'Pertama', 'sort_order' => 1, 'status' => Question::STATUS_ACTIVE]);
+        Question::factory()->create(['question' => 'Nonaktif', 'sort_order' => 2, 'status' => Question::STATUS_INACTIVE]);
+        Question::factory()->create(['question' => 'Kedua', 'sort_order' => 2, 'status' => Question::STATUS_ACTIVE]);
+
+        $this->get(route('passenger.rating.assessment', [$vehicle->qr_token, $driver]))
+            ->assertOk()
+            ->assertSeeInOrder(['Pertama', 'Kedua', 'Ketiga'])
+            ->assertDontSee('Nonaktif');
+    }
+
+    public function test_submit_validates_required_rating_yes_no_and_option_ownership(): void
+    {
+        $branch = Branch::factory()->create();
+        $vehicle = Vehicle::factory()->for($branch)->create(['status' => Vehicle::STATUS_ACTIVE]);
+        $driver = Driver::factory()->for($branch)->create(['status' => Driver::STATUS_ACTIVE]);
+        $rating = Question::factory()->create(['answer_type' => Question::TYPE_RATING, 'is_required' => true, 'status' => Question::STATUS_ACTIVE]);
+        $yesNo = Question::factory()->create(['answer_type' => Question::TYPE_YES_NO, 'is_required' => true, 'status' => Question::STATUS_ACTIVE]);
+        $choice = Question::factory()->create(['answer_type' => Question::TYPE_MULTIPLE_CHOICE, 'is_required' => true, 'status' => Question::STATUS_ACTIVE]);
+        $otherChoice = Question::factory()->create(['answer_type' => Question::TYPE_MULTIPLE_CHOICE, 'is_required' => true, 'status' => Question::STATUS_ACTIVE]);
+        $invalidOption = $otherChoice->options()->create(['option_text' => 'Milik pertanyaan lain', 'sort_order' => 1]);
+
+        $this->from(route('passenger.rating.assessment', [$vehicle->qr_token, $driver]))
+            ->post(route('passenger.rating.submit', [$vehicle->qr_token, $driver]), [
+                'answers' => [
+                    $rating->id => '6',
+                    $yesNo->id => '2',
+                    $choice->id => (string) $invalidOption->id,
+                ],
+            ])->assertSessionHasErrors(["answers.{$rating->id}", "answers.{$yesNo->id}", "answers.{$choice->id}"]);
+    }
+
+    public function test_inactive_vehicle_is_rejected_in_passenger_flow(): void
+    {
+        $vehicle = Vehicle::factory()->create(['status' => Vehicle::STATUS_INACTIVE]);
+
+        $this->get(route('passenger.rating.entry', $vehicle->qr_token))->assertForbidden();
+    }
+}
