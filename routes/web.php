@@ -3,7 +3,10 @@
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DriverController;
+use App\Http\Controllers\Admin\MonitoringController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\ReportDriverController;
+use App\Http\Controllers\Admin\ReportVehicleController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\Admin\VehicleQrController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -42,6 +45,9 @@ Route::middleware('auth')->group(function (): void {
         Route::get('vehicles/{vehicle}/qr/print', [VehicleQrController::class, 'print'])->name('vehicles.qr.print');
         Route::patch('vehicles/{vehicle}/toggle-status', [VehicleController::class, 'toggleStatus'])->name('vehicles.toggle-status');
         Route::patch('vehicles/{vehicle}/regenerate-qr', [VehicleController::class, 'regenerateQrToken'])->name('vehicles.regenerate-qr');
+        Route::get('monitoring', MonitoringController::class)->name('monitoring.index');
+        Route::get('reports/drivers', ReportDriverController::class)->name('reports.drivers');
+        Route::get('reports/vehicles', ReportVehicleController::class)->name('reports.vehicles');
         Route::resource('questions', QuestionController::class);
         Route::patch('questions/{question}/toggle-status', [QuestionController::class, 'toggleStatus'])->name('questions.toggle-status');
     });

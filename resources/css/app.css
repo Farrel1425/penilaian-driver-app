@@ -1259,3 +1259,15 @@ button {
     .passenger-actions { grid-template-columns: 1fr; }
     .passenger-progress small { display: none; }
 }
+.report-filter { grid-template-columns: 170px 170px minmax(180px, 240px) auto auto; }
+.dashboard-grid { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr) minmax(320px, 0.7fr); }
+.dashboard-grid-wide { grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr); }
+.distribution-bars, .trend-list, .ranking-list { display: grid; gap: 10px; }
+.distribution-bars > div { align-items: center; display: grid; gap: 10px; grid-template-columns: 24px minmax(0, 1fr) 42px; }
+.distribution-bars div div { background: #edf2f7; border-radius: 999px; height: 10px; overflow: hidden; }
+.distribution-bars i { background: var(--color-blue-600); display: block; height: 100%; }
+.trend-list > div, .ranking-list > div { border: 1px solid var(--color-border); border-radius: 8px; padding: 12px; }
+.trend-list span, .ranking-list span, .trend-list small { color: var(--color-muted); display: block; font-size: 12px; font-weight: 700; }
+.trend-list strong { display: block; font-size: 22px; margin: 4px 0; }
+.data-table.compact { min-width: 620px; }
+@media (max-width: 1080px) { .report-filter, .dashboard-grid, .dashboard-grid-wide { grid-template-columns: 1fr; } }

@@ -8,16 +8,17 @@ use App\Support\Admin\RatingReportFilters;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class DashboardController extends Controller
+class MonitoringController extends Controller
 {
     public function __invoke(Request $request, RatingAnalyticsService $analytics): View
     {
         $filters = RatingReportFilters::fromRequest($request);
 
-        return view('admin.dashboard', [
+        return view('admin.monitoring.index', [
             'filters' => $filters,
             'branches' => $analytics->branches(),
-            'data' => $analytics->dashboard($filters),
+            'ratings' => $analytics->monitoring($filters)['ratings'],
+            'analytics' => $analytics,
         ]);
     }
 }
