@@ -1,4 +1,4 @@
-﻿<x-layouts.guest title="Login Admin">
+<x-layouts.guest title="Login Admin">
     <main class="login-page">
         <section class="login-panel">
             <div class="login-brand">

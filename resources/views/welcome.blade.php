@@ -1,4 +1,4 @@
-﻿<x-layouts.guest title="Penilaian Driver">
+<x-layouts.guest title="Penilaian Driver">
     <main class="login-page">
         <section class="login-panel">
             <div class="login-brand">

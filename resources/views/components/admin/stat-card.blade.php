@@ -1,4 +1,4 @@
-﻿@props(['label', 'value' => '-', 'note' => null])
+@props(['label', 'value' => '-', 'note' => null])
 
 <section class="stat-card">
     <p>{{ $label }}</p>

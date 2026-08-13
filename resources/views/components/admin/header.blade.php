@@ -1,8 +1,8 @@
-﻿@props(['title' => 'Dashboard'])
+@props(['title' => 'Dashboard'])
 
 <header class="admin-header">
     <button class="icon-button mobile-menu-button" type="button" data-sidebar-toggle aria-label="Buka menu admin">
-        <span aria-hidden="true">â˜°</span>
+        <span aria-hidden="true">&equiv;</span>
     </button>
 
     <div>

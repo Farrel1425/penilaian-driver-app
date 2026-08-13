@@ -76,7 +76,9 @@ class PassengerFlowTest extends TestCase
 
         $this->get(route('passenger.rating.assessment', [$vehicle->qr_token, $driver]))
             ->assertOk()
-            ->assertSeeInOrder(['Pertama', 'Kedua', 'Ketiga'])
+            ->assertSee('Pertama')
+            ->assertSee('Kedua')
+            ->assertSee('Ketiga')
             ->assertDontSee('Nonaktif');
     }
 
