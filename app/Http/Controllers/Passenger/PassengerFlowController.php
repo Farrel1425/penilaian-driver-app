@@ -7,6 +7,7 @@ use App\Http\Requests\Passenger\StoreRatingRequest;
 use App\Models\Driver;
 use App\Models\Question;
 use App\Models\Rating;
+use App\Models\RatingAnswer;
 use App\Models\Vehicle;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,25 @@ class PassengerFlowController extends Controller
             ->active()
             ->orderBy('full_name')
             ->get();
+
+        $driverScores = RatingAnswer::query()
+            ->whereHas('question', fn ($query) => $query
+                ->where('target_type', Question::TARGET_DRIVER)
+                ->where('answer_type', Question::TYPE_RATING))
+            ->whereHas('rating', fn ($query) => $query
+                ->where('branch_id', $vehicle->branch_id)
+                ->whereIn('driver_id', $drivers->pluck('id')))
+            ->with('rating:id,driver_id')
+            ->get()
+            ->groupBy(fn (RatingAnswer $answer) => $answer->rating?->driver_id)
+            ->map(function ($answers): ?float {
+                $scores = $answers->map(fn (RatingAnswer $answer) => $answer->answer_value[0] ?? null)
+                    ->filter(fn ($value) => in_array((int) $value, [1, 2, 3, 4, 5], true));
+
+                return $scores->isEmpty() ? null : round($scores->avg(), 1);
+            });
+
+        $drivers->each(fn (Driver $driver) => $driver->setAttribute('passenger_average_rating', $driverScores->get($driver->id)));
 
         return view('passenger.drivers', compact('vehicle', 'drivers'));
     }

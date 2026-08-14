@@ -1,34 +1,119 @@
 <x-layouts.admin title="Master Pertanyaan">
-    <x-admin.page-header title="Master Pertanyaan" description="Kelola pertanyaan penilaian driver dan kendaraan.">
-        <a class="primary-button" href="{{ route('admin.questions.create') }}">Tambah Pertanyaan</a>
-    </x-admin.page-header>
+    <x-admin.page-header title="Daftar Pertanyaan" />
 
     <x-admin.flash />
 
-    <x-admin.panel>
-        <form class="filter-bar filter-bar-wide" method="GET" action="{{ route('admin.questions.index') }}">
-            <input name="search" value="{{ request('search') }}" placeholder="Cari pertanyaan">
-            <select name="target_type"><option value="">Semua target</option><option value="driver" @selected(request('target_type') === 'driver')>Driver</option><option value="vehicle" @selected(request('target_type') === 'vehicle')>Kendaraan</option></select>
-            <select name="answer_type"><option value="">Semua tipe</option><option value="rating" @selected(request('answer_type') === 'rating')>Rating</option><option value="yes_no" @selected(request('answer_type') === 'yes_no')>Ya/Tidak</option><option value="multiple_choice" @selected(request('answer_type') === 'multiple_choice')>Pilihan Ganda</option><option value="checkbox" @selected(request('answer_type') === 'checkbox')>Checkbox</option><option value="short_text" @selected(request('answer_type') === 'short_text')>Jawaban Singkat</option><option value="paragraph" @selected(request('answer_type') === 'paragraph')>Paragraf</option></select>
-            <select name="status"><option value="">Semua status</option><option value="active" @selected(request('status') === 'active')>Aktif</option><option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option></select>
-            <button class="secondary-button" type="submit">Filter</button><a class="text-button" href="{{ route('admin.questions.index') }}">Reset</a>
+    <section class="question-list-card">
+        <form class="question-list-toolbar" method="GET" action="{{ route('admin.questions.index') }}">
+            <div class="question-list-filters">
+                <label class="question-search-field">
+                    <x-lucide-search aria-hidden="true" />
+                    <input name="search" value="{{ request('search') }}" placeholder="Cari pertanyaan..." aria-label="Cari pertanyaan">
+                </label>
+
+                <select name="target_type" onchange="this.form.requestSubmit()" aria-label="Filter kategori">
+                    <option value="">Semua Kategori</option>
+                    <option value="driver" @selected(request('target_type') === 'driver')>Driver</option>
+                    <option value="vehicle" @selected(request('target_type') === 'vehicle')>Kendaraan</option>
+                </select>
+
+                <select name="status" onchange="this.form.requestSubmit()" aria-label="Filter status">
+                    <option value="">Semua Status</option>
+                    <option value="active" @selected(request('status') === 'active')>Aktif</option>
+                    <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
+                </select>
+            </div>
+
+            <a class="primary-button question-create-button" href="{{ route('admin.questions.create') }}">
+                <x-lucide-plus aria-hidden="true" />
+                <span>Tambah Pertanyaan</span>
+            </a>
         </form>
 
-        <div class="table-wrap"><table class="data-table"><thead><tr><th>No</th><th>Pertanyaan</th><th>Target</th><th>Tipe Jawaban</th><th>Wajib</th><th>Urutan</th><th>Status</th><th>Action</th></tr></thead><tbody>
-            @forelse($questions as $question)
-                <tr>
-                    <td>{{ $questions->firstItem() + $loop->index }}</td>
-                    <td><strong>{{ $question->question }}</strong><small>{{ $question->options_count }} opsi</small></td>
-                    <td>{{ $question->target_type === 'driver' ? 'Driver' : 'Kendaraan' }}</td>
-                    <td>{{ str($question->answer_type)->replace('_', ' ')->title() }}</td>
-                    <td>{{ $question->is_required ? 'Wajib' : 'Opsional' }}</td>
-                    <td>{{ $question->sort_order }}</td>
-                    <td><x-admin.status-badge :tone="$question->status === 'active' ? 'success' : 'neutral'">{{ $question->status === 'active' ? 'Aktif' : 'Nonaktif' }}</x-admin.status-badge></td>
-                    <td><x-admin.row-actions><a href="{{ route('admin.questions.show', $question) }}">Detail</a><a href="{{ route('admin.questions.edit', $question) }}">Edit</a></x-admin.row-actions></td>
-                </tr>
-            @empty
-                <tr><td colspan="8"><x-admin.empty-state title="Belum ada pertanyaan" description="Tambahkan pertanyaan agar form penilaian dapat dibangun dari database." /></td></tr>
-            @endforelse
-        </tbody></table></div>{{ $questions->links() }}
-    </x-admin.panel>
+        <div class="table-wrap question-table-wrap">
+            <table class="data-table question-data-table">
+                <thead>
+                    <tr>
+                        <th class="question-column-number">No.</th>
+                        <th>Pertanyaan</th>
+                        <th>Kategori</th>
+                        <th>Tipe Jawaban</th>
+                        <th>Wajib</th>
+                        <th>Urutan</th>
+                        <th>Status</th>
+                        <th class="question-column-actions">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($questions as $question)
+                        <tr>
+                            <td class="question-cell-center">{{ $questions->firstItem() + $loop->index }}</td>
+                            <td class="question-cell-question">{{ $question->question }}</td>
+                            <td>
+                                <span class="question-target-badge question-target-{{ $question->target_type }}">
+                                    {{ $question->target_type === 'driver' ? 'Driver' : 'Kendaraan' }}
+                                </span>
+                            </td>
+                            <td>
+                                @if ($question->answer_type === 'rating')
+                                    <span class="question-answer-rating"><x-lucide-star aria-hidden="true" />Rating (1-5)</span>
+                                @else
+                                    {{ str($question->answer_type)->replace('_', ' ')->title() }}
+                                @endif
+                            </td>
+                            <td>
+                                @if ($question->is_required)
+                                    <span class="question-required-badge">Ya</span>
+                                @else
+                                    <span class="question-optional-label">Tidak</span>
+                                @endif
+                            </td>
+                            <td class="question-cell-center">{{ $question->sort_order }}</td>
+                            <td>
+                                <span class="question-status question-status-{{ $question->status }}">
+                                    {{ $question->status === 'active' ? 'Aktif' : 'Nonaktif' }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="table-row-actions">
+                                    <a href="{{ route('admin.questions.show', $question) }}" aria-label="Lihat pertanyaan: {{ $question->question }}" title="Lihat">
+                                        <x-lucide-eye aria-hidden="true" />
+                                    </a>
+                                    <a href="{{ route('admin.questions.edit', $question) }}" aria-label="Edit pertanyaan: {{ $question->question }}" title="Edit">
+                                        <x-lucide-pencil aria-hidden="true" />
+                                    </a>
+                                    <form method="POST" action="{{ route('admin.questions.destroy', $question) }}" onsubmit="return confirm('Hapus pertanyaan ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" aria-label="Hapus pertanyaan: {{ $question->question }}" title="Hapus"><x-lucide-trash-2 aria-hidden="true" /></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr><td colspan="8"><x-admin.empty-state title="Belum ada pertanyaan" description="Tambahkan pertanyaan agar form penilaian dapat dibangun dari database." /></td></tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        <footer class="question-pagination">
+            <span>Menampilkan {{ $questions->firstItem() ?? 0 }} - {{ $questions->lastItem() ?? 0 }} dari {{ $questions->total() }} data</span>
+            @if ($questions->hasPages())
+                <nav aria-label="Pagination pertanyaan">
+                    @if ($questions->onFirstPage())
+                        <span class="question-page-button is-disabled"><x-lucide-chevron-left aria-hidden="true" /></span>
+                    @else
+                        <a class="question-page-button" href="{{ $questions->previousPageUrl() }}" aria-label="Halaman sebelumnya"><x-lucide-chevron-left aria-hidden="true" /></a>
+                    @endif
+                    <span class="question-page-button is-current">{{ $questions->currentPage() }}</span>
+                    @if ($questions->hasMorePages())
+                        <a class="question-page-button" href="{{ $questions->nextPageUrl() }}" aria-label="Halaman berikutnya"><x-lucide-chevron-right aria-hidden="true" /></a>
+                    @else
+                        <span class="question-page-button is-disabled"><x-lucide-chevron-right aria-hidden="true" /></span>
+                    @endif
+                </nav>
+            @endif
+        </footer>
+    </section>
 </x-layouts.admin>

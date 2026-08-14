@@ -94,3 +94,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderQuestionPreview();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-star-rating]').forEach((rating) => {
+        const updateStars = (value) => {
+            rating.querySelectorAll('label').forEach((label, index) => {
+                label.classList.toggle('is-selected', index < Number(value));
+            });
+        };
+
+        rating.addEventListener('change', (event) => {
+            if (event.target instanceof HTMLInputElement) {
+                updateStars(event.target.value);
+            }
+        });
+
+        const selected = rating.querySelector('input:checked');
+        if (selected instanceof HTMLInputElement) {
+            updateStars(selected.value);
+        }
+    });
+});

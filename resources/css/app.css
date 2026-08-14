@@ -103,3 +103,250 @@
 .form-field input,.form-field select,.form-field textarea { border-radius: 4px; font-size: 11px; min-height: 35px; }
 .flash-message { border-radius: 4px; font-size: 10px; padding: 9px 11px; }
 @media (max-width: 1024px) { .admin-sidebar { width: 210px; min-width: 210px; } .admin-header { background: #fff; display: flex; min-height: 58px; padding: 10px 16px; } .admin-header .eyebrow { display: none; } .admin-header h1 { font-size: 15px; } .sidebar-user { margin-top: 24px; } }
+
+/* Restore the reference's desktop-scale spacing and typography. */
+.admin-shell,.admin-shell button,.admin-shell input,.admin-shell select,.admin-shell textarea { font-family: Inter, "Segoe UI", Arial, sans-serif; }
+.admin-sidebar { padding: 26px 16px 16px; width: 260px; min-width: 260px; }
+.sidebar-brand { gap: 12px; padding: 0 8px; }
+.brand-mark { border-radius: 6px; height: 40px; width: 40px; }
+.brand-mark svg { height: 22px; width: 22px; }
+.admin-sidebar .brand-title { font-size: 11px; letter-spacing: .04em; }
+.admin-sidebar .brand-subtitle { font-size: 10px; }
+.sidebar-nav { margin-top: 30px; }
+.sidebar-label { font-size: 10px; margin: 24px 8px 8px; }
+.sidebar-link { border-radius: 6px; font-size: 12px; gap: 12px; min-height: 44px; padding: 10px 12px; }
+.nav-icon { flex-basis: 18px; height: 18px; width: 18px; }
+.sidebar-user { margin: auto -16px 0; padding: 16px 20px 4px; }
+.sidebar-user-avatar { flex-basis: 32px; font-size: 11px; height: 32px; width: 32px; }
+.sidebar-user strong { font-size: 11px; }
+.sidebar-user span { font-size: 10px; }
+.sidebar-user button svg { height: 18px; width: 18px; }
+.admin-content { gap: 16px; margin: 0 auto; max-width: 1440px; padding: 24px; width: 100%; }
+.page-header { min-height: 30px; }
+.page-header h2 { font-family: "Trebuchet MS", Inter, sans-serif; font-size: 22px; font-weight: 700; letter-spacing: 0; }
+.page-header p { font-size: 13px; margin-top: 6px; }
+.page-header .primary-button { min-height: 38px; padding: 9px 15px; }
+.admin-panel { border-radius: 8px; padding: 20px; }
+.panel-heading { margin-bottom: 16px; }
+.panel-heading h3 { font-size: 16px; }
+.filter-bar { gap: 12px; margin-bottom: 18px; }
+.filter-bar input,.filter-bar select { border-radius: 6px; font-size: 12px; min-height: 38px; padding: 8px 11px; }
+.primary-button,.secondary-button,.text-button,.danger-button { border-radius: 6px; font-size: 12px; min-height: 38px; padding: 8px 14px; }
+.table-wrap { border-radius: 6px; }
+.data-table { min-width: 860px; }
+.data-table th,.data-table td { padding: 13px 16px; }
+.data-table th { font-size: 11px; }
+.data-table td,.data-table td strong { font-size: 12px; }
+.data-table small { font-size: 10px; }
+.status-badge { border-radius: 4px; font-size: 10px; padding: 5px 8px; }
+.row-actions { gap: 12px; }
+.row-actions a { font-size: 11px; }
+.stat-card { min-height: 112px; padding: 18px; }
+.stat-card strong { font-size: 26px; }
+.stat-card p,.stat-card span { font-size: 12px; }
+.form-grid,.detail-grid { gap: 16px; }
+.form-field span,.form-section-title { font-size: 12px; }
+.form-field input,.form-field select,.form-field textarea { border-radius: 6px; font-size: 13px; min-height: 40px; }
+.flash-message { border-radius: 6px; font-size: 12px; padding: 11px 13px; }
+@media (max-width: 1024px) { .admin-sidebar { width: 260px; min-width: 260px; } .admin-content { padding: 20px; } }
+
+/* Question list details mirror the approved table reference. */
+.question-list-card { background: #fff; border: 1px solid #e0e3e5; border-radius: 8px; box-shadow: 0 2px 7px rgba(18, 40, 84, .035); overflow: hidden; }
+.question-list-toolbar { align-items: center; background: #fff; border-bottom: 1px solid #e0e3e5; display: flex; gap: 16px; justify-content: space-between; padding: 20px; }
+.question-list-filters { display: flex; flex: 1; gap: 12px; }
+.question-search-field { flex: 0 1 256px; position: relative; }
+.question-search-field svg { color: #76767f; height: 16px; left: 11px; position: absolute; top: 11px; width: 16px; }
+.question-search-field input,.question-list-filters select { background: #f7f9fb; border: 1px solid #c6c6cf; border-radius: 6px; color: #45464e; font-size: 12px; height: 40px; outline: 0; padding: 9px 12px; width: 100%; }
+.question-search-field input { padding-left: 36px; }
+.question-list-filters select { flex: 0 0 176px; }
+.question-search-field input:focus,.question-list-filters select:focus { border-color: #1d4ed8; box-shadow: 0 0 0 2px rgba(29, 78, 216, .15); }
+.question-create-button { align-items: center; flex: 0 0 auto; gap: 7px; height: 40px; }
+.question-create-button svg { height: 16px; width: 16px; }
+.question-table-wrap { border: 0; border-radius: 0; }
+.question-data-table { min-width: 920px; }
+.question-data-table th { background: #f2f4f6; border-bottom: 1px solid #e0e3e5; color: #364152; font-size: 12px; padding: 14px 16px; }
+.question-data-table td { color: #667085; font-size: 12px; height: 64px; padding: 12px 16px; }
+.question-data-table tbody tr:hover { background: #fafbfd; }
+.question-data-table .question-cell-center { text-align: center; }
+.question-data-table .question-column-number { text-align: center; width: 64px; }
+.question-data-table .question-column-actions { text-align: center; width: 128px; }
+.question-data-table .question-cell-question { color: #101828; font-weight: 600; line-height: 1.45; max-width: 250px; }
+.question-target-badge,.question-required-badge { border-radius: 6px; display: inline-flex; font-size: 11px; font-weight: 600; padding: 6px 9px; }
+.question-target-driver,.question-required-badge { background: #d9f8eb; color: #006b4f; }
+.question-target-vehicle { background: #e9edff; color: #1d4ed8; }
+.question-answer-rating { align-items: center; color: #667085; display: inline-flex; gap: 6px; white-space: nowrap; }
+.question-answer-rating svg { color: #f5b400; fill: currentColor; height: 14px; width: 14px; }
+.question-optional-label { color: #667085; }
+.question-status { font-weight: 500; }
+.question-status-active { color: #20c678; }
+.question-status-inactive { background: #fff1f0; border-radius: 6px; color: #e03131; display: inline-flex; padding: 6px 9px; }
+.table-row-actions { align-items: center; display: flex; gap: 15px; justify-content: center; }
+.table-row-actions a,.table-row-actions button { align-items: center; background: transparent; border: 0; color: #1857e8; display: inline-flex; justify-content: center; padding: 0; }
+.table-row-actions button { color: #ed1c24; }
+.table-row-actions svg { height: 15px; stroke-width: 2; width: 15px; }
+.question-pagination { align-items: center; border-top: 1px solid #e0e3e5; color: #667085; display: flex; font-size: 12px; justify-content: space-between; padding: 16px 20px; }
+.question-pagination nav { display: flex; gap: 5px; }
+.question-page-button { align-items: center; background: #fff; border: 1px solid #dfe3e8; border-radius: 2px; color: #667085; display: inline-flex; height: 34px; justify-content: center; min-width: 34px; }
+.question-page-button svg { height: 16px; width: 16px; }
+.question-page-button.is-current { background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 600; }
+.question-page-button.is-disabled { color: #c6c6cf; }
+@media (max-width: 720px) { .question-list-toolbar { align-items: stretch; flex-direction: column; padding: 16px; } .question-list-filters { flex-direction: column; } .question-search-field,.question-list-filters select { flex: auto; } .question-create-button { justify-content: center; width: 100%; } .question-pagination { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 16px; } }
+
+/* Vehicle list layout follows the same dashboard table system. */
+.vehicle-list-card { background: #fff; border: 1px solid #e0e3e5; border-radius: 8px; box-shadow: 0 2px 7px rgba(18, 40, 84, .035); overflow: hidden; }
+.vehicle-list-toolbar { align-items: center; background: #fff; border-bottom: 1px solid #e0e3e5; display: flex; gap: 16px; justify-content: space-between; padding: 20px; }
+.vehicle-list-filters { display: flex; flex: 1; gap: 12px; }
+.vehicle-search-field { flex: 0 1 280px; position: relative; }
+.vehicle-search-field svg { color: #76767f; height: 16px; left: 11px; position: absolute; top: 11px; width: 16px; }
+.vehicle-search-field input,.vehicle-list-filters select { background: #f7f9fb; border: 1px solid #c6c6cf; border-radius: 6px; color: #45464e; font-size: 12px; height: 40px; outline: 0; padding: 9px 12px; width: 100%; }
+.vehicle-search-field input { padding-left: 36px; }
+.vehicle-list-filters select { flex: 0 0 176px; }
+.vehicle-search-field input:focus,.vehicle-list-filters select:focus { border-color: #1d4ed8; box-shadow: 0 0 0 2px rgba(29, 78, 216, .15); }
+.vehicle-create-button { align-items: center; flex: 0 0 auto; gap: 7px; height: 40px; }
+.vehicle-create-button svg { height: 16px; width: 16px; }
+.vehicle-table-wrap { border: 0; border-radius: 0; }
+.vehicle-data-table { min-width: 1080px; }
+.vehicle-data-table th { background: #f2f4f6; border-bottom: 1px solid #e0e3e5; color: #364152; font-size: 11px; padding: 14px 12px; }
+.vehicle-data-table td { color: #475467; font-size: 11px; height: 62px; padding: 10px 12px; white-space: nowrap; }
+.vehicle-data-table tbody tr:hover { background: #fafbfd; }
+.vehicle-data-table .vehicle-cell-center { text-align: center; }
+.vehicle-column-number { text-align: center; width: 50px; }
+.vehicle-column-photo { width: 62px; }
+.vehicle-column-qr { text-align: center; width: 66px; }
+.vehicle-column-actions { text-align: center; width: 120px; }
+.vehicle-cell-police { color: #172b4d; font-weight: 700; }
+.vehicle-photo-thumbnail { align-items: center; background: #f1f3f5; border-radius: 4px; display: flex; height: 34px; justify-content: center; overflow: hidden; width: 48px; }
+.vehicle-photo-thumbnail img { height: 100%; object-fit: cover; width: 100%; }
+.vehicle-photo-thumbnail svg { color: #667085; height: 20px; width: 20px; }
+.vehicle-qr-thumbnail { display: block; height: 32px; image-rendering: pixelated; margin: 0 auto; width: 32px; }
+.vehicle-status { border-radius: 4px; display: inline-flex; font-size: 10px; font-weight: 600; padding: 4px 6px; }
+.vehicle-status-active { background: #e5faef; color: #159b5a; }
+.vehicle-status-inactive { background: #fff1f0; color: #e03131; }
+.vehicle-pagination { align-items: center; border-top: 1px solid #e0e3e5; color: #667085; display: flex; font-size: 12px; justify-content: space-between; padding: 16px 20px; }
+.vehicle-pagination nav { display: flex; gap: 5px; }
+.vehicle-page-button { align-items: center; background: #fff; border: 1px solid #dfe3e8; border-radius: 2px; color: #667085; display: inline-flex; height: 34px; justify-content: center; min-width: 34px; }
+.vehicle-page-button svg { height: 16px; width: 16px; }
+.vehicle-page-button.is-current { background: #1d4ed8; border-color: #1d4ed8; color: #fff; font-weight: 600; }
+.vehicle-page-button.is-disabled { color: #c6c6cf; }
+@media (max-width: 720px) { .vehicle-list-toolbar { align-items: stretch; flex-direction: column; padding: 16px; } .vehicle-list-filters { flex-direction: column; } .vehicle-search-field,.vehicle-list-filters select { flex: auto; } .vehicle-create-button { justify-content: center; width: 100%; } .vehicle-pagination { align-items: flex-start; flex-direction: column; gap: 12px; padding: 14px 16px; } }
+
+/* Passenger vehicle information: a focused, mobile-first QR entry screen. */
+.passenger-shell { background: #f8fafc; }
+.passenger-flow-vehicle { background: #fff; display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 480px; min-height: 100vh; padding: 0; }
+.passenger-mobile-header { align-items: center; display: flex; height: 64px; justify-content: center; padding: 0 16px; position: relative; }
+.passenger-mobile-header button { align-items: center; background: transparent; border: 0; color: #191c1e; display: flex; height: 40px; justify-content: center; left: 16px; padding: 0; position: absolute; top: 12px; width: 40px; }
+.passenger-mobile-header button svg { height: 24px; width: 24px; }
+.passenger-mobile-header a { align-items: center; color: #191c1e; display: flex; height: 40px; justify-content: center; left: 16px; position: absolute; top: 12px; width: 40px; }
+.passenger-mobile-header a svg { height: 24px; width: 24px; }
+.passenger-mobile-header h1 { color: #191c1e; font-family: Inter, "Segoe UI", sans-serif; font-size: 16px; font-weight: 700; margin: 0; }
+.passenger-vehicle-page { background: #fff; flex: 1; padding: 24px 16px; }
+.passenger-vehicle-card { background: #fff; border: 1px solid rgba(198, 198, 207, .42); border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, .05); padding: 16px; }
+.passenger-vehicle-heading { margin-bottom: 16px; }
+.passenger-vehicle-heading h2 { color: #38456c; font-family: "Trebuchet MS", Inter, sans-serif; font-size: 22px; font-weight: 600; line-height: 1.25; margin: 0; }
+.passenger-vehicle-heading p { color: #45464e; font-family: Inter, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.4; margin: 3px 0 0; }
+.passenger-vehicle-photo { align-items: center; background: #f2f4f6; border-radius: 6px; display: flex; height: 160px; justify-content: center; margin-bottom: 22px; overflow: hidden; }
+.passenger-vehicle-photo img { height: 100%; object-fit: contain; padding: 8px; width: 100%; }
+.passenger-vehicle-photo svg { color: #667085; height: 64px; width: 64px; }
+.passenger-vehicle-details { margin: 0; }
+.passenger-vehicle-details > div { align-items: flex-start; border-top: 1px solid rgba(198, 198, 207, .42); display: flex; gap: 14px; padding: 16px 0; }
+.passenger-vehicle-details > div:first-child { border-top: 0; padding-top: 0; }
+.passenger-vehicle-details > div:last-child { padding-bottom: 0; }
+.passenger-vehicle-details > div > svg { color: #5f6368; flex: 0 0 18px; height: 18px; margin-top: 2px; width: 18px; }
+.passenger-vehicle-details dt { color: #5f6368; font-family: Inter, "Segoe UI", sans-serif; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; }
+.passenger-vehicle-details dd { color: #191c1e; font-family: Inter, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.4; margin: 5px 0 0; }
+.passenger-vehicle-footer { background: #fff; border-top: 1px solid rgba(198, 198, 207, .42); box-shadow: 0 -4px 20px rgba(0, 0, 0, .05); padding: 16px 20px max(24px, env(safe-area-inset-bottom)); position: sticky; bottom: 0; }
+.passenger-vehicle-continue { align-items: center; background: #1d4ed8; border: 1px solid #1d4ed8; border-radius: 6px; box-shadow: 0 2px 4px rgba(29, 78, 216, .22); color: #fff; display: flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700; height: 48px; justify-content: center; letter-spacing: .06em; text-transform: uppercase; width: 100%; }
+.passenger-vehicle-continue:hover { background: #1641bd; border-color: #1641bd; }
+@media (min-width: 481px) { .passenger-flow-vehicle { box-shadow: 0 10px 32px rgba(0, 0, 0, .08); } }
+
+/* Passenger driver selection: only active drivers from the scanned vehicle's branch are rendered. */
+.passenger-flow-driver-list { background: #fff; display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 480px; min-height: 100vh; padding: 0; }
+.passenger-driver-page { background: #fff; flex: 1; padding: 20px 24px 32px; }
+.passenger-driver-instruction { color: #45464e; font-family: Inter, "Segoe UI", sans-serif; font-size: 14px; line-height: 1.5; margin: 0 0 20px; }
+.passenger-driver-list { display: grid; gap: 12px; }
+.passenger-driver-option { align-items: center; background: #fff; border: 1px solid #c6c6cf; border-radius: 8px; color: #191c1e; display: flex; gap: 14px; min-height: 70px; padding: 10px 14px; transition: border-color .16s ease, box-shadow .16s ease, transform .16s ease; }
+.passenger-driver-option:hover,.passenger-driver-option:focus-visible { border-color: #1d4ed8; box-shadow: 0 3px 8px rgba(29, 78, 216, .12); outline: 0; transform: translateY(-1px); }
+.passenger-driver-photo { align-items: center; background: #e6e8ea; border: 1px solid #d8dadc; border-radius: 50%; color: #38456c; display: flex; flex: 0 0 48px; font-family: Inter, "Segoe UI", sans-serif; font-size: 17px; font-weight: 700; height: 48px; justify-content: center; overflow: hidden; width: 48px; }
+.passenger-driver-photo img { height: 100%; object-fit: cover; width: 100%; }
+.passenger-driver-summary { min-width: 0; }
+.passenger-driver-summary h2 { color: #191c1e; font-family: "Trebuchet MS", Inter, sans-serif; font-size: 16px; font-weight: 600; line-height: 1.3; margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.passenger-driver-summary p { align-items: center; color: #38456c; display: flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 13px; gap: 4px; margin: 5px 0 0; }
+.passenger-driver-summary p svg { color: #f5b400; fill: currentColor; height: 14px; width: 14px; }
+.passenger-driver-summary .passenger-driver-empty-rating { color: #76767f; font-size: 12px; }
+.passenger-driver-arrow { color: #1d4ed8; height: 21px; margin-left: auto; width: 21px; }
+.passenger-driver-empty { background: #f2f4f6; border: 1px solid #e0e3e5; border-radius: 8px; color: #45464e; font-size: 14px; line-height: 1.5; padding: 16px; }
+.passenger-driver-help { align-items: flex-start; background: #f2f4f6; border: 1px solid #d8dadc; border-radius: 8px; display: flex; gap: 12px; margin-top: 24px; padding: 16px; }
+.passenger-driver-help svg { color: #1d4ed8; flex: 0 0 19px; height: 19px; margin-top: 1px; width: 19px; }
+.passenger-driver-help p { color: #45464e; font-family: Inter, "Segoe UI", sans-serif; font-size: 13px; line-height: 1.45; margin: 0; }
+@media (min-width: 481px) { .passenger-flow-driver-list { box-shadow: 0 10px 32px rgba(0, 0, 0, .08); } }
+
+/* Passenger driver detail: a confirmation screen before the assessment begins. */
+.passenger-flow-driver-detail { background: #f7f9fb; display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 480px; min-height: 100vh; padding: 0; }
+.passenger-flow-driver-detail .passenger-mobile-header { background: #fff; }
+.passenger-driver-detail-page { flex: 1; padding: 16px 24px 28px; }
+.passenger-driver-profile { align-items: center; display: flex; flex-direction: column; margin: 0 auto 26px; text-align: center; }
+.passenger-driver-detail-photo { align-items: center; background: #e0e3e5; border: 4px solid #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, .12); color: #38456c; display: flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 34px; font-weight: 700; height: 96px; justify-content: center; overflow: hidden; width: 96px; }
+.passenger-driver-detail-photo img { height: 100%; object-fit: cover; width: 100%; }
+.passenger-driver-profile h2 { color: #0b1a3f; font-family: "Trebuchet MS", Inter, sans-serif; font-size: 21px; font-weight: 700; line-height: 1.3; margin: 12px 0 8px; }
+.passenger-driver-active { align-items: center; background: #e6f4ea; border-radius: 999px; color: #137333; display: inline-flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 10px; font-weight: 700; gap: 5px; letter-spacing: .05em; padding: 5px 9px; text-transform: uppercase; }
+.passenger-driver-active i { background: #137333; border-radius: 50%; height: 6px; width: 6px; }
+.passenger-driver-detail-card { background: #fff; border: 1px solid rgba(198, 198, 207, .48); border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, .05); margin: 0; padding: 0 16px; }
+.passenger-driver-detail-card > div { align-items: flex-start; border-top: 1px solid rgba(198, 198, 207, .42); display: flex; gap: 14px; padding: 16px 0; }
+.passenger-driver-detail-card > div:first-child { border-top: 0; }
+.passenger-driver-detail-icon { align-items: center; background: #f2f4f6; border-radius: 50%; color: #667085; display: flex; flex: 0 0 40px; height: 40px; justify-content: center; width: 40px; }
+.passenger-driver-detail-icon svg { height: 19px; width: 19px; }
+.passenger-driver-detail-card dt { color: #667085; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; line-height: 1.3; margin-top: 2px; }
+.passenger-driver-detail-card dd { color: #191c1e; font-family: Inter, "Segoe UI", sans-serif; font-size: 14px; font-weight: 700; line-height: 1.4; margin: 5px 0 0; }
+.passenger-driver-detail-footer { background: #fff; border-top: 1px solid rgba(198, 198, 207, .25); display: grid; gap: 8px; padding: 16px 24px max(20px, env(safe-area-inset-bottom)); }
+.passenger-driver-select,.passenger-driver-other { align-items: center; border-radius: 8px; display: flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700; height: 48px; justify-content: center; letter-spacing: .03em; }
+.passenger-driver-select { background: #1d4ed8; border: 1px solid #1d4ed8; box-shadow: 0 4px 12px rgba(29, 78, 216, .2); color: #fff; }
+.passenger-driver-select:hover { background: #1641bd; border-color: #1641bd; }
+.passenger-driver-other { color: #1d4ed8; }
+.passenger-driver-other:hover { background: #f2f4f6; }
+@media (min-width: 481px) { .passenger-flow-driver-detail { box-shadow: 0 10px 32px rgba(0, 0, 0, .08); } }
+
+/* Passenger assessment supports every configured answer type. */
+.passenger-flow-assessment { background: #fff; display: flex; flex-direction: column; gap: 0; margin: 0 auto; max-width: 480px; min-height: 100vh; padding: 0; }
+.passenger-flow-assessment .passenger-mobile-header { background: #fff; border-bottom: 1px solid rgba(198, 198, 207, .55); }
+.passenger-assessment-page { background: #fff; display: flex; flex: 1; flex-direction: column; }
+.passenger-assessment-intro { color: #45464e; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; margin: 20px 24px 18px; text-align: center; }
+.passenger-assessment-group { border: 0; display: grid; gap: 16px; margin: 0; padding: 0 24px 22px; }
+.passenger-assessment-group + .passenger-assessment-group { border-top: 1px solid rgba(198, 198, 207, .35); padding-top: 20px; }
+.passenger-assessment-group h2 { color: #38456c; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700; margin: 0 0 -2px; }
+.passenger-assessment-question { border: 0; display: grid; gap: 9px; margin: 0; min-width: 0; padding: 0; }
+.passenger-assessment-question legend { color: #191c1e; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; font-weight: 600; line-height: 1.4; padding: 0; }
+.passenger-assessment-question legend span { color: #1d4ed8; }
+.passenger-assessment-question legend b { color: #ba1a1a; font-size: 12px; }
+.passenger-assessment-error { color: #ba1a1a; font-size: 11px; }
+.passenger-star-rating { align-items: center; display: flex; gap: 4px; }
+.passenger-star-rating label { cursor: pointer; display: inline-flex; }
+.passenger-star-rating input { height: 1px; opacity: 0; position: absolute; width: 1px; }
+.passenger-star-rating svg { color: #d1d5db; height: 26px; stroke-width: 1.7; transition: color .15s ease, fill .15s ease; width: 26px; }
+.passenger-star-rating label.is-selected svg { color: #ffb500; fill: currentColor; }
+.passenger-star-rating label:focus-within svg { outline: 2px solid #1d4ed8; outline-offset: 2px; }
+.passenger-answer-options { display: grid; gap: 8px; }
+.passenger-answer-options label { align-items: center; border: 1px solid #c6c6cf; border-radius: 6px; color: #191c1e; display: flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 13px; gap: 10px; min-height: 42px; padding: 10px 12px; }
+.passenger-answer-options input { accent-color: #1d4ed8; height: 16px; margin: 0; width: 16px; }
+.passenger-answer-yes-no { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+.passenger-answer-yes-no label { justify-content: center; }
+.passenger-assessment-question input[type="text"],.passenger-assessment-question textarea { background: #fff; border: 1px solid #c6c6cf; border-radius: 6px; color: #191c1e; font-family: Inter, "Segoe UI", sans-serif; font-size: 13px; outline: 0; padding: 12px; resize: vertical; width: 100%; }
+.passenger-assessment-question input[type="text"] { height: 44px; }
+.passenger-assessment-question textarea { min-height: 104px; }
+.passenger-assessment-question input:focus,.passenger-assessment-question textarea:focus { border-color: #1d4ed8; box-shadow: 0 0 0 2px rgba(29, 78, 216, .12); }
+.passenger-assessment-empty { background: #f2f4f6; border: 1px solid #e0e3e5; border-radius: 6px; color: #45464e; font-size: 12px; padding: 12px; }
+.passenger-assessment-footer { background: #fff; border-top: 1px solid rgba(198, 198, 207, .55); box-shadow: 0 -3px 12px rgba(0, 0, 0, .035); margin-top: auto; padding: 16px 24px max(20px, env(safe-area-inset-bottom)); position: sticky; bottom: 0; }
+.passenger-assessment-footer button { background: #1d4ed8; border: 1px solid #1d4ed8; border-radius: 6px; box-shadow: 0 3px 8px rgba(29, 78, 216, .2); color: #fff; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700; height: 48px; letter-spacing: .04em; text-transform: uppercase; width: 100%; }
+.passenger-assessment-footer button:hover { background: #1641bd; border-color: #1641bd; }
+@media (min-width: 481px) { .passenger-flow-assessment { box-shadow: 0 10px 32px rgba(0, 0, 0, .08); } }
+
+/* Passenger success: a centered confirmation after a rating is stored. */
+.passenger-flow-success { align-items: center; background: #fff; display: flex; justify-content: center; margin: 0 auto; max-width: 480px; min-height: 100vh; padding: 24px; text-align: center; }
+.passenger-success-page { align-items: center; display: flex; flex-direction: column; width: 100%; }
+.passenger-success-icon { align-items: center; background: #d9fbe8; border-radius: 9px; color: #1fb65b; display: flex; height: 68px; justify-content: center; margin-bottom: 25px; width: 68px; }
+.passenger-success-icon svg { height: 38px; stroke-width: 2.6; width: 38px; }
+.passenger-success-page h1 { color: #191c1e; font-family: "Trebuchet MS", Inter, sans-serif; font-size: 23px; font-weight: 700; line-height: 1.3; margin: 0; }
+.passenger-success-page > p { color: #566176; font-family: Inter, "Segoe UI", sans-serif; font-size: 13px; line-height: 1.5; margin: 12px 0 0; }
+.passenger-success-page .passenger-success-note { font-size: 12px; margin-top: 7px; max-width: 280px; }
+.passenger-success-finish { align-items: center; background: #1d4ed8; border: 1px solid #1d4ed8; border-radius: 6px; box-shadow: 0 3px 8px rgba(29, 78, 216, .2); color: #fff; display: flex; font-family: Inter, "Segoe UI", sans-serif; font-size: 12px; font-weight: 700; height: 48px; justify-content: center; margin-top: 34px; width: min(100%, 280px); }
+.passenger-success-finish:hover { background: #1641bd; border-color: #1641bd; }
+@media (min-width: 481px) { .passenger-flow-success { box-shadow: 0 10px 32px rgba(0, 0, 0, .08); } }

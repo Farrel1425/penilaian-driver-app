@@ -1,4 +1,4 @@
-@props(['title' => 'Penilaian'])
+@props(['title' => 'Penilaian', 'variant' => 'default'])
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -13,7 +13,7 @@
     @endif
 </head>
 <body class="passenger-shell">
-    <main class="passenger-flow">
+    <main @class(['passenger-flow', 'passenger-flow-' . $variant => $variant !== 'default'])>
         {{ $slot }}
     </main>
 </body>

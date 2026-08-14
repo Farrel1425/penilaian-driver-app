@@ -19,7 +19,7 @@
 
         <div class="table-wrap">
             <table class="data-table">
-                <thead><tr><th>Kode</th><th>Cabang</th><th>Driver</th><th>Kendaraan</th><th>Status</th><th>Action</th></tr></thead>
+                <thead><tr><th>Kode</th><th>Cabang</th><th>Driver</th><th>Kendaraan</th><th>Status</th><th>Aksi</th></tr></thead>
                 <tbody>
                     @forelse ($branches as $branch)
                         <tr>
@@ -28,7 +28,7 @@
                             <td>{{ $branch->drivers_count }}</td>
                             <td>{{ $branch->vehicles_count }}</td>
                             <td><x-admin.status-badge :tone="$branch->status === 'active' ? 'success' : 'neutral'">{{ $branch->status === 'active' ? 'Aktif' : 'Nonaktif' }}</x-admin.status-badge></td>
-                            <td><x-admin.row-actions><a href="{{ route('admin.branches.show', $branch) }}">Detail</a><a href="{{ route('admin.branches.edit', $branch) }}">Edit</a></x-admin.row-actions></td>
+                            <td><div class="table-row-actions"><a href="{{ route('admin.branches.show', $branch) }}" aria-label="Lihat cabang {{ $branch->name }}" title="Lihat"><x-lucide-eye aria-hidden="true" /></a><a href="{{ route('admin.branches.edit', $branch) }}" aria-label="Edit cabang {{ $branch->name }}" title="Edit"><x-lucide-pencil aria-hidden="true" /></a><form method="POST" action="{{ route('admin.branches.destroy', $branch) }}" onsubmit="return confirm('Hapus cabang ini?')">@csrf @method('DELETE')<button type="submit" aria-label="Hapus cabang {{ $branch->name }}" title="Hapus"><x-lucide-trash-2 aria-hidden="true" /></button></form></div></td>
                         </tr>
                     @empty
                         <tr><td colspan="6"><x-admin.empty-state title="Belum ada cabang" description="Tambahkan cabang untuk mulai mengelola driver dan kendaraan." /></td></tr>

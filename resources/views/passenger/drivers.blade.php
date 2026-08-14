@@ -1,18 +1,40 @@
-<x-passenger.layout title="Pilih Driver">
-    <x-passenger.progress :step="2" />
-    <section class="passenger-card">
-        <p class="eyebrow">Pilih Driver</p>
-        <h1>Driver Aktif</h1>
-        <p>{{ $vehicle->branch?->name }} · {{ $vehicle->police_number }}</p>
-        <div class="driver-choice-list">
+<x-passenger.layout title="Pilih Driver" variant="driver-list">
+    <header class="passenger-mobile-header">
+        <a href="{{ route('passenger.rating.vehicle', $vehicle->qr_token) }}" aria-label="Kembali"><x-lucide-chevron-left aria-hidden="true" /></a>
+        <h1>Pilih Driver</h1>
+    </header>
+
+    <section class="passenger-driver-page">
+        <p class="passenger-driver-instruction">Pilih driver yang bertugas di unit kerja ini</p>
+
+        <div class="passenger-driver-list">
             @forelse($drivers as $driver)
-                <a class="driver-choice-card" href="{{ route('passenger.rating.driver', [$vehicle->qr_token, $driver]) }}">
-                    <div class="driver-avatar">{{ strtoupper(substr($driver->full_name, 0, 1)) }}</div>
-                    <div><strong>{{ $driver->full_name }}</strong><span>{{ $driver->phone ?: 'Driver aktif' }}</span></div>
+                <a class="passenger-driver-option" href="{{ route('passenger.rating.driver', [$vehicle->qr_token, $driver]) }}">
+                    <div class="passenger-driver-photo">
+                        @if ($driver->photo)
+                            <img src="{{ Str::startsWith($driver->photo, ['http://', 'https://', '/']) ? $driver->photo : asset('storage/' . $driver->photo) }}" alt="{{ $driver->full_name }}">
+                        @else
+                            <span>{{ strtoupper(substr($driver->full_name, 0, 1)) }}</span>
+                        @endif
+                    </div>
+                    <div class="passenger-driver-summary">
+                        <h2>{{ $driver->full_name }}</h2>
+                        @if ($driver->passenger_average_rating !== null)
+                            <p>{{ number_format($driver->passenger_average_rating, 1) }} <x-lucide-star aria-hidden="true" /></p>
+                        @else
+                            <p class="passenger-driver-empty-rating">Belum ada rating</p>
+                        @endif
+                    </div>
+                    <x-lucide-chevron-right class="passenger-driver-arrow" aria-hidden="true" />
                 </a>
             @empty
-                <div class="passenger-note">Belum ada driver aktif pada cabang kendaraan ini.</div>
+                <div class="passenger-driver-empty">Belum ada driver aktif pada cabang kendaraan ini.</div>
             @endforelse
         </div>
+
+        <aside class="passenger-driver-help">
+            <x-lucide-info aria-hidden="true" />
+            <p>Tidak menemukan driver?<br>Hubungi unit kerja Anda</p>
+        </aside>
     </section>
 </x-passenger.layout>
