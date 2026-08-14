@@ -1,9 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.querySelector('[data-sidebar-toggle]');
     const sidebar = document.querySelector('[data-admin-sidebar]');
+    const passwordToggle = document.querySelector('[data-password-toggle]');
+    const passwordInput = document.querySelector('[data-password-input]');
 
     toggle?.addEventListener('click', () => {
         sidebar?.classList.toggle('is-open');
+    });
+
+    passwordToggle?.addEventListener('click', () => {
+        const isVisible = passwordInput?.type === 'text';
+
+        if (!passwordInput) {
+            return;
+        }
+
+        passwordInput.type = isVisible ? 'password' : 'text';
+        passwordToggle.classList.toggle('is-visible', !isVisible);
+        passwordToggle.setAttribute('aria-pressed', String(!isVisible));
+        passwordToggle.setAttribute('aria-label', isVisible ? 'Tampilkan password' : 'Sembunyikan password');
     });
 });
 
