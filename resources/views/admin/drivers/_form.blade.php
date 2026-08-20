@@ -23,7 +23,7 @@
     </x-admin.select>
     <x-admin.field label="Nomor HP" name="phone" :value="$driver->phone" />
     <x-admin.field label="Email" name="email" type="email" :value="$driver->email" />
-    <x-admin.field label="Path Foto" name="photo" :value="$driver->photo" />
+    <x-admin.image-cropper label="Foto Driver" name="photo" :value="$driver->photo" default-ratio="0.75" />
     <x-admin.textarea label="Alamat" name="address" :value="$driver->address" />
 </div>
 

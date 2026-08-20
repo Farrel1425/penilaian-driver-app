@@ -8,6 +8,8 @@ use App\Models\Branch;
 use App\Models\Driver;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class DriverController extends Controller
@@ -42,7 +44,10 @@ class DriverController extends Controller
 
     public function store(DriverRequest $request): RedirectResponse
     {
-        $driver = Driver::query()->create($request->validated());
+        $data = $request->safe()->except('photo');
+        $data['photo'] = $this->storePhoto($request);
+
+        $driver = Driver::query()->create($data);
 
         return redirect()->route('admin.drivers.show', $driver)->with('status', 'Driver berhasil dibuat.');
     }
@@ -61,7 +66,14 @@ class DriverController extends Controller
 
     public function update(DriverRequest $request, Driver $driver): RedirectResponse
     {
-        $driver->update($request->validated());
+        $data = $request->safe()->except('photo');
+
+        if ($request->hasFile('photo')) {
+            $this->deletePhoto($driver->photo);
+            $data['photo'] = $this->storePhoto($request);
+        }
+
+        $driver->update($data);
 
         return redirect()->route('admin.drivers.show', $driver)->with('status', 'Driver berhasil diperbarui.');
     }
@@ -81,8 +93,23 @@ class DriverController extends Controller
             return back()->with('status', 'Driver sudah memiliki rating, jadi dinonaktifkan.');
         }
 
+        $this->deletePhoto($driver->photo);
         $driver->delete();
 
         return redirect()->route('admin.drivers.index')->with('status', 'Driver berhasil dihapus.');
+    }
+
+    private function storePhoto(DriverRequest $request): ?string
+    {
+        return $request->hasFile('photo')
+            ? $request->file('photo')->store('drivers', 'public')
+            : null;
+    }
+
+    private function deletePhoto(?string $photo): void
+    {
+        if ($photo && ! Str::startsWith($photo, ['http://', 'https://', '/'])) {
+            Storage::disk('public')->delete($photo);
+        }
     }
 }

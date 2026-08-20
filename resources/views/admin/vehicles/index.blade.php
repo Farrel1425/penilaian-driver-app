@@ -1,6 +1,4 @@
 <x-layouts.admin title="Master Kendaraan">
-    <x-admin.page-header title="Daftar Kendaraan" />
-
     <x-admin.flash />
 
     <section class="vehicle-list-card">

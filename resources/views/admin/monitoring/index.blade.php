@@ -1,5 +1,4 @@
 <x-layouts.admin title="Monitoring Penilaian">
-    <x-admin.page-header title="Monitoring" description="Pantau penilaian yang masuk dari alur penumpang." />
     @include('admin.partials.report-filter', ['filters' => $filters, 'branches' => $branches])
     <x-admin.panel>
         <div class="table-wrap"><table class="data-table"><thead><tr><th>Tanggal</th><th>Driver</th><th>Kendaraan</th><th>Cabang</th><th>Rating</th><th>Detail</th></tr></thead><tbody>

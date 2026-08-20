@@ -1,25 +1,25 @@
 <x-layouts.admin title="Master Cabang">
-    <x-admin.page-header title="Master Cabang" description="Kelola cabang atau unit kerja sebagai penghubung driver dan kendaraan.">
-        <a class="primary-button" href="{{ route('admin.branches.create') }}">Tambah Cabang</a>
-    </x-admin.page-header>
-
     <x-admin.flash />
 
-    <x-admin.panel>
-        <form class="filter-bar" method="GET" action="{{ route('admin.branches.index') }}">
-            <input name="search" value="{{ request('search') }}" placeholder="Cari kode, nama, alamat">
-            <select name="status">
-                <option value="">Semua status</option>
+    <section class="branch-list-card">
+        <form class="branch-list-toolbar" method="GET" action="{{ route('admin.branches.index') }}">
+            <div class="branch-list-filters">
+                <label class="branch-search-field">
+                    <x-lucide-search aria-hidden="true" />
+                    <input name="search" value="{{ request('search') }}" placeholder="Cari kode, nama, atau alamat..." aria-label="Cari cabang">
+                </label>
+                <select name="status" onchange="this.form.requestSubmit()" aria-label="Filter status">
+                    <option value="">Semua Status</option>
                 <option value="active" @selected(request('status') === 'active')>Aktif</option>
                 <option value="inactive" @selected(request('status') === 'inactive')>Nonaktif</option>
-            </select>
-            <button class="secondary-button" type="submit">Filter</button>
-            <a class="text-button" href="{{ route('admin.branches.index') }}">Reset</a>
+                </select>
+            </div>
+            <a class="primary-button branch-create-button" href="{{ route('admin.branches.create') }}"><x-lucide-plus aria-hidden="true" /><span>Tambah Cabang</span></a>
         </form>
 
-        <div class="table-wrap">
-            <table class="data-table">
-                <thead><tr><th>Kode</th><th>Cabang</th><th>Driver</th><th>Kendaraan</th><th>Status</th><th>Aksi</th></tr></thead>
+        <div class="table-wrap branch-table-wrap">
+            <table class="data-table branch-data-table">
+                <thead><tr><th>Kode</th><th>Cabang</th><th>Driver</th><th>Kendaraan</th><th>Status</th><th class="branch-column-actions">Aksi</th></tr></thead>
                 <tbody>
                     @forelse ($branches as $branch)
                         <tr>
@@ -27,7 +27,7 @@
                             <td><span>{{ $branch->name }}</span><small>{{ $branch->address ?: '-' }}</small></td>
                             <td>{{ $branch->drivers_count }}</td>
                             <td>{{ $branch->vehicles_count }}</td>
-                            <td><x-admin.status-badge :tone="$branch->status === 'active' ? 'success' : 'neutral'">{{ $branch->status === 'active' ? 'Aktif' : 'Nonaktif' }}</x-admin.status-badge></td>
+                            <td><span class="driver-status driver-status-{{ $branch->status }}">{{ $branch->status === 'active' ? 'Aktif' : 'Nonaktif' }}</span></td>
                             <td><div class="table-row-actions"><a href="{{ route('admin.branches.show', $branch) }}" aria-label="Lihat cabang {{ $branch->name }}" title="Lihat"><x-lucide-eye aria-hidden="true" /></a><a href="{{ route('admin.branches.edit', $branch) }}" aria-label="Edit cabang {{ $branch->name }}" title="Edit"><x-lucide-pencil aria-hidden="true" /></a><form method="POST" action="{{ route('admin.branches.destroy', $branch) }}" onsubmit="return confirm('Hapus cabang ini?')">@csrf @method('DELETE')<button type="submit" aria-label="Hapus cabang {{ $branch->name }}" title="Hapus"><x-lucide-trash-2 aria-hidden="true" /></button></form></div></td>
                         </tr>
                     @empty
@@ -36,6 +36,23 @@
                 </tbody>
             </table>
         </div>
-        {{ $branches->links() }}
-    </x-admin.panel>
+        <footer class="branch-pagination">
+            <span>Menampilkan {{ $branches->firstItem() ?? 0 }} - {{ $branches->lastItem() ?? 0 }} dari {{ $branches->total() }} data</span>
+            @if ($branches->hasPages())
+                <nav aria-label="Pagination cabang">
+                    @if ($branches->onFirstPage())
+                        <span class="driver-page-button is-disabled"><x-lucide-chevron-left aria-hidden="true" /></span>
+                    @else
+                        <a class="driver-page-button" href="{{ $branches->previousPageUrl() }}" aria-label="Halaman sebelumnya"><x-lucide-chevron-left aria-hidden="true" /></a>
+                    @endif
+                    <span class="driver-page-button is-current">{{ $branches->currentPage() }}</span>
+                    @if ($branches->hasMorePages())
+                        <a class="driver-page-button" href="{{ $branches->nextPageUrl() }}" aria-label="Halaman berikutnya"><x-lucide-chevron-right aria-hidden="true" /></a>
+                    @else
+                        <span class="driver-page-button is-disabled"><x-lucide-chevron-right aria-hidden="true" /></span>
+                    @endif
+                </nav>
+            @endif
+        </footer>
+    </section>
 </x-layouts.admin>

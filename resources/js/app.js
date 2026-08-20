@@ -1,8 +1,13 @@
+import Cropper from 'cropperjs';
+import 'cropperjs/dist/cropper.css';
+
 document.addEventListener('DOMContentLoaded', () => {
     const toggle = document.querySelector('[data-sidebar-toggle]');
     const sidebar = document.querySelector('[data-admin-sidebar]');
     const passwordToggle = document.querySelector('[data-password-toggle]');
     const passwordInput = document.querySelector('[data-password-input]');
+    const profileMenu = document.querySelector('[data-profile-menu]');
+    const profileTrigger = document.querySelector('[data-profile-trigger]');
 
     toggle?.addEventListener('click', () => {
         sidebar?.classList.toggle('is-open');
@@ -19,6 +24,25 @@ document.addEventListener('DOMContentLoaded', () => {
         passwordToggle.classList.toggle('is-visible', !isVisible);
         passwordToggle.setAttribute('aria-pressed', String(!isVisible));
         passwordToggle.setAttribute('aria-label', isVisible ? 'Tampilkan password' : 'Sembunyikan password');
+    });
+
+    profileTrigger?.addEventListener('click', () => {
+        const isOpen = profileMenu?.classList.toggle('is-open') ?? false;
+        profileTrigger.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    document.addEventListener('click', (event) => {
+        if (profileMenu && !profileMenu.contains(event.target)) {
+            profileMenu.classList.remove('is-open');
+            profileTrigger?.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            profileMenu?.classList.remove('is-open');
+            profileTrigger?.setAttribute('aria-expanded', 'false');
+        }
     });
 });
 
@@ -93,6 +117,190 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     renderQuestionPreview();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('[data-image-cropper]').forEach((field) => {
+        const imageInput = field.querySelector('[data-image-input]');
+        const cameraInput = field.querySelector('[data-camera-input]');
+        const selectButton = field.querySelector('[data-image-select]');
+        const cameraButton = field.querySelector('[data-image-camera]');
+        const modal = field.querySelector('[data-image-modal]');
+        const cropImage = field.querySelector('[data-cropper-image]');
+        const preview = field.querySelector('[data-image-preview]');
+        const fileName = field.querySelector('[data-image-file-name]');
+        const ratio = field.querySelector('[data-cropper-ratio]');
+        const zoom = field.querySelector('[data-cropper-zoom]');
+        const controls = field.querySelector('[data-cropper-controls]');
+        const cropperActions = field.querySelector('[data-cropper-actions]');
+        const cameraStage = field.querySelector('[data-camera-stage]');
+        const cameraActions = field.querySelector('[data-camera-actions]');
+        const cameraVideo = field.querySelector('[data-camera-video]');
+        const cameraMessage = field.querySelector('[data-camera-message]');
+        let cropper;
+        let stream;
+
+        if (!imageInput || !modal || !cropImage || !preview || !fileName || !ratio || !zoom) {
+            return;
+        }
+
+        const stopCamera = () => {
+            stream?.getTracks().forEach((track) => track.stop());
+            stream = undefined;
+            cameraVideo.srcObject = null;
+        };
+
+        const closeModal = () => {
+            stopCamera();
+            cropper?.destroy();
+            cropper = undefined;
+            modal.hidden = true;
+            document.body.classList.remove('image-cropper-is-open');
+        };
+
+        const openModal = () => {
+            modal.hidden = false;
+            document.body.classList.add('image-cropper-is-open');
+        };
+
+        const selectedRatio = () => (ratio.value === 'free' ? Number.NaN : Number(ratio.value));
+
+        const updatePreview = (file) => {
+            const image = document.createElement('img');
+            image.src = URL.createObjectURL(file);
+            image.alt = 'Preview foto yang dipilih';
+            preview.replaceChildren(image);
+            fileName.textContent = file.name;
+        };
+
+        const writeImageFile = (file) => {
+            const transfer = new DataTransfer();
+            transfer.items.add(file);
+            imageInput.files = transfer.files;
+        };
+
+        const openEditor = (file) => {
+            if (!file?.type.startsWith('image/')) {
+                return;
+            }
+
+            stopCamera();
+            cropper?.destroy();
+            cameraStage.hidden = true;
+            cameraActions.hidden = true;
+            controls.hidden = false;
+            cropperActions.hidden = false;
+            cropImage.hidden = false;
+            ratio.value = field.dataset.defaultRatio || 'free';
+            zoom.value = '0';
+            openModal();
+
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+                cropImage.onload = () => {
+                    cropper = new Cropper(cropImage, {
+                        aspectRatio: selectedRatio(),
+                        autoCropArea: 0.88,
+                        background: false,
+                        dragMode: 'move',
+                        guides: true,
+                        movable: true,
+                        zoomable: true,
+                        responsive: true,
+                        viewMode: 1,
+                    });
+                };
+                cropImage.src = reader.result;
+            });
+            reader.readAsDataURL(file);
+        };
+
+        const openCamera = async () => {
+            if (!navigator.mediaDevices?.getUserMedia) {
+                cameraInput?.click();
+                return;
+            }
+
+            cropper?.destroy();
+            cropper = undefined;
+            openModal();
+            cropImage.hidden = true;
+            cameraStage.hidden = false;
+            cameraActions.hidden = false;
+            controls.hidden = true;
+            cropperActions.hidden = true;
+            cameraMessage.hidden = false;
+            cameraMessage.textContent = 'Kamera sedang disiapkan...';
+
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: { ideal: 'environment' } },
+                    audio: false,
+                });
+                cameraVideo.srcObject = stream;
+                await cameraVideo.play();
+                cameraMessage.hidden = true;
+            } catch {
+                cameraMessage.textContent = 'Kamera tidak tersedia. Pilih foto dari perangkat Anda.';
+            }
+        };
+
+        selectButton?.addEventListener('click', () => imageInput.click());
+        cameraButton?.addEventListener('click', openCamera);
+        imageInput.addEventListener('change', () => openEditor(imageInput.files?.[0]));
+        cameraInput?.addEventListener('change', () => openEditor(cameraInput.files?.[0]));
+
+        field.querySelectorAll('[data-image-close]').forEach((button) => {
+            button.addEventListener('click', closeModal);
+        });
+
+        field.querySelector('[data-camera-retry]')?.addEventListener('click', () => {
+            stopCamera();
+            openCamera();
+        });
+
+        field.querySelector('[data-camera-capture]')?.addEventListener('click', () => {
+            if (!cameraVideo.videoWidth || !cameraVideo.videoHeight) {
+                return;
+            }
+
+            const canvas = document.createElement('canvas');
+            canvas.width = cameraVideo.videoWidth;
+            canvas.height = cameraVideo.videoHeight;
+            canvas.getContext('2d')?.drawImage(cameraVideo, 0, 0);
+
+            canvas.toBlob((blob) => {
+                if (!blob) return;
+                openEditor(new File([blob], 'foto-' + Date.now() + '.jpg', { type: 'image/jpeg' }));
+            }, 'image/jpeg', 0.92);
+        });
+
+        ratio.addEventListener('change', () => cropper?.setAspectRatio(selectedRatio()));
+        zoom.addEventListener('input', () => cropper?.zoomTo(1 + Number(zoom.value)));
+        field.querySelector('[data-cropper-reset]')?.addEventListener('click', () => {
+            cropper?.reset();
+            cropper?.setAspectRatio(selectedRatio());
+            zoom.value = '0';
+        });
+
+        field.querySelector('[data-cropper-apply]')?.addEventListener('click', () => {
+            const canvas = cropper?.getCroppedCanvas({
+                fillColor: '#ffffff',
+                imageSmoothingEnabled: true,
+                imageSmoothingQuality: 'high',
+                maxHeight: 1600,
+                maxWidth: 1600,
+            });
+
+            canvas?.toBlob((blob) => {
+                if (!blob) return;
+                const file = new File([blob], 'foto-crop-' + Date.now() + '.jpg', { type: 'image/jpeg' });
+                writeImageFile(file);
+                updatePreview(file);
+                closeModal();
+            }, 'image/jpeg', 0.9);
+        });
+    });
 });
 
 document.addEventListener('DOMContentLoaded', () => {

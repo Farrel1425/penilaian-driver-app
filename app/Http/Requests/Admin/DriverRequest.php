@@ -26,7 +26,7 @@ class DriverRequest extends FormRequest
             'address' => ['nullable', 'string'],
             'phone' => ['nullable', 'string', 'max:50'],
             'email' => ['nullable', 'email', 'max:255'],
-            'photo' => ['nullable', 'string', 'max:255'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'sim_number' => ['nullable', 'string', 'max:100'],
             'sim_type' => ['nullable', 'string', 'max:50'],
             'sim_expired_at' => ['nullable', 'date'],

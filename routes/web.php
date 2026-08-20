@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\MonitoringController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\ReportDriverController;
 use App\Http\Controllers\Admin\ReportVehicleController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\VehicleController;
 use App\Http\Controllers\Admin\VehicleQrController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -30,7 +31,7 @@ Route::middleware('guest')->group(function (): void {
     Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 });
 
-Route::middleware('auth')->group(function (): void {
+Route::middleware(['auth', 'active.admin'])->group(function (): void {
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
     Route::prefix('admin')->name('admin.')->group(function (): void {
@@ -50,5 +51,7 @@ Route::middleware('auth')->group(function (): void {
         Route::get('reports/vehicles', ReportVehicleController::class)->name('reports.vehicles');
         Route::resource('questions', QuestionController::class);
         Route::patch('questions/{question}/toggle-status', [QuestionController::class, 'toggleStatus'])->name('questions.toggle-status');
+        Route::resource('users', UserController::class);
+        Route::patch('users/{user}/toggle-status', [UserController::class, 'toggleStatus'])->name('users.toggle-status');
     });
 });

@@ -1,5 +1,4 @@
 <x-layouts.admin title="Report Driver">
-    <x-admin.page-header title="Report Driver" description="Performa driver berdasarkan jawaban rating 1-5." />
     @include('admin.partials.report-filter', ['filters' => $filters, 'branches' => $branches])
     <div class="stat-grid"><x-admin.stat-card label="Total Driver" :value="$data['stats']['total_driver']" note="Sesuai filter cabang" /><x-admin.stat-card label="Average Rating" :value="$data['stats']['average_rating'] ?? '-'" note="Tidak termasuk yes/no" /><x-admin.stat-card label="Total Penilaian" :value="$data['stats']['total_assessments']" note="Assessment unik" /><x-admin.stat-card label="Driver Terbaik" :value="$data['performance']->first()['name'] ?? '-'" note="Berdasarkan average" /></div>
     <div class="dashboard-grid"><x-admin.panel title="Trend Rating">@include('admin.partials.trend', ['trend' => $data['trend']])</x-admin.panel><x-admin.panel title="Distribusi Rating">@include('admin.partials.distribution', ['distribution' => $data['distribution']])</x-admin.panel></div>

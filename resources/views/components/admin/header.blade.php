@@ -1,24 +1,34 @@
 @props(['title' => 'Dashboard'])
+@php($subtitles = ['Dashboard' => 'Ringkasan aktivitas penilaian driver dan kendaraan.', 'Master Cabang' => 'Kelola data cabang atau unit kerja.', 'Master Driver' => 'Kelola data driver secara lengkap, akurat, dan terstruktur.', 'Master Kendaraan' => 'Kelola data kendaraan dan QR Code.', 'Master Pertanyaan' => 'Kelola pertanyaan penilaian.', 'Pengguna' => 'Kelola akun administrator dan akses aplikasi.', 'Monitoring' => 'Pantau aktivitas penilaian yang masuk.', 'Report Driver' => 'Analisis kinerja penilaian driver.', 'Report Kendaraan' => 'Analisis kinerja penilaian kendaraan.'])
 
 <header class="admin-header">
     <button class="icon-button mobile-menu-button" type="button" data-sidebar-toggle aria-label="Buka menu admin">
-        <span aria-hidden="true">&equiv;</span>
+        <x-lucide-menu aria-hidden="true" />
     </button>
 
-    <div>
-        <p class="eyebrow">Admin</p>
+    <div class="admin-header-title">
         <h1>{{ $title }}</h1>
+        <p>{{ $subtitles[$title] ?? 'Kelola aplikasi penilaian LAIS.' }}</p>
     </div>
 
-    <div class="header-user">
-        <div class="user-avatar">{{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}</div>
-        <div>
-            <p>{{ auth()->user()->name ?? 'Admin' }}</p>
-            <span>{{ auth()->user()->email ?? '' }}</span>
+    <div class="admin-profile-menu" data-profile-menu>
+        <button class="admin-profile-trigger" type="button" data-profile-trigger aria-expanded="false" aria-haspopup="menu">
+            <span class="admin-profile-copy"><strong>{{ auth()->user()->name ?? 'Admin' }}</strong><small>Super Admin</small></span>
+            <span class="admin-profile-avatar">
+                @if (auth()->user()?->photo)
+                    <img src="{{ str_starts_with(auth()->user()->photo, 'http') ? auth()->user()->photo : asset('storage/'.auth()->user()->photo) }}" alt="Foto profil {{ auth()->user()->name }}">
+                @else
+                    {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
+                @endif
+            </span>
+        </button>
+
+        <div class="admin-profile-dropdown" data-profile-dropdown role="menu">
+            <div class="admin-profile-dropdown-user"><strong>{{ auth()->user()->name ?? 'Admin' }}</strong><span>{{ auth()->user()->email ?? '' }}</span></div>
+            <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <button type="submit" role="menuitem"><x-lucide-log-out aria-hidden="true" /><span>Logout</span></button>
+            </form>
         </div>
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button class="text-button" type="submit">Logout</button>
-        </form>
     </div>
 </header>

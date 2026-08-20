@@ -36,7 +36,7 @@ class VehicleRequest extends FormRequest
             'contract_number' => ['nullable', 'string', 'max:255'],
             'contract_expired_at' => ['nullable', 'date'],
             'description' => ['nullable', 'string'],
-            'photo' => ['nullable', 'string', 'max:255'],
+            'photo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:4096'],
             'status' => ['required', Rule::in([Vehicle::STATUS_ACTIVE, Vehicle::STATUS_INACTIVE])],
         ];
     }

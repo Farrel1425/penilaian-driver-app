@@ -1,5 +1,4 @@
 <x-layouts.admin title="Dashboard">
-    <x-admin.page-header title="Dashboard" description="Ringkasan penilaian driver dan kendaraan berdasarkan data database." />
     @include('admin.partials.report-filter', ['filters' => $filters, 'branches' => $branches])
 
     <div class="stat-grid">

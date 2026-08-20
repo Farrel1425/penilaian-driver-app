@@ -1,6 +1,4 @@
 <x-layouts.admin title="Master Pertanyaan">
-    <x-admin.page-header title="Daftar Pertanyaan" />
-
     <x-admin.flash />
 
     <section class="question-list-card">

@@ -8,6 +8,7 @@ use App\Models\Branch;
 use App\Models\Vehicle;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -42,7 +43,10 @@ class VehicleController extends Controller
 
     public function store(VehicleRequest $request): RedirectResponse
     {
-        $vehicle = Vehicle::query()->create($request->validated() + ['qr_token' => Str::random(40)]);
+        $data = $request->safe()->except('photo');
+        $data['photo'] = $this->storePhoto($request);
+
+        $vehicle = Vehicle::query()->create($data + ['qr_token' => Str::random(40)]);
 
         return redirect()->route('admin.vehicles.show', $vehicle)->with('status', 'Kendaraan berhasil dibuat.');
     }
@@ -61,7 +65,14 @@ class VehicleController extends Controller
 
     public function update(VehicleRequest $request, Vehicle $vehicle): RedirectResponse
     {
-        $vehicle->update($request->validated());
+        $data = $request->safe()->except('photo');
+
+        if ($request->hasFile('photo')) {
+            $this->deletePhoto($vehicle->photo);
+            $data['photo'] = $this->storePhoto($request);
+        }
+
+        $vehicle->update($data);
 
         return redirect()->route('admin.vehicles.show', $vehicle)->with('status', 'Kendaraan berhasil diperbarui.');
     }
@@ -88,8 +99,23 @@ class VehicleController extends Controller
             return back()->with('status', 'Kendaraan sudah memiliki rating, jadi dinonaktifkan.');
         }
 
+        $this->deletePhoto($vehicle->photo);
         $vehicle->delete();
 
         return redirect()->route('admin.vehicles.index')->with('status', 'Kendaraan berhasil dihapus.');
+    }
+
+    private function storePhoto(VehicleRequest $request): ?string
+    {
+        return $request->hasFile('photo')
+            ? $request->file('photo')->store('vehicles', 'public')
+            : null;
+    }
+
+    private function deletePhoto(?string $photo): void
+    {
+        if ($photo && ! Str::startsWith($photo, ['http://', 'https://', '/'])) {
+            Storage::disk('public')->delete($photo);
+        }
     }
 }

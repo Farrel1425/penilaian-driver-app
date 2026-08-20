@@ -12,7 +12,7 @@
     <x-admin.field label="Bahan Bakar" name="fuel_type" :value="$vehicle->fuel_type" />
     <x-admin.field label="Transmisi" name="transmission" :value="$vehicle->transmission" />
     <x-admin.field label="Kapasitas Penumpang" name="passenger_capacity" type="number" :value="$vehicle->passenger_capacity" />
-    <x-admin.field label="Path Foto" name="photo" :value="$vehicle->photo" />
+    <x-admin.image-cropper label="Foto Kendaraan" name="photo" :value="$vehicle->photo" default-ratio="1.7777778" />
 </div>
 <div class="form-section-title">Informasi Operasional</div>
 <div class="form-grid">
