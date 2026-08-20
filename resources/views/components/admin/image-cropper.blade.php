@@ -3,7 +3,6 @@
     'label',
     'value' => null,
     'folder' => 'images',
-    'defaultRatio' => 'free',
 ])
 
 @php
@@ -13,13 +12,13 @@
         : null;
 @endphp
 
-<div class="image-cropper-field" data-image-cropper data-default-ratio="{{ $defaultRatio }}">
+<div class="image-cropper-field" data-image-cropper>
     <div class="image-cropper-label-row">
         <label for="{{ $inputId }}">{{ $label }}</label>
         <span>Opsional</span>
     </div>
 
-    <div class="image-cropper-summary">
+    <div class="image-cropper-summary" data-image-open-picker role="button" tabindex="0" aria-label="Pilih atau ganti {{ strtolower($label) }}">
         <div class="image-cropper-preview" data-image-preview>
             @if ($previewUrl)
                 <img src="{{ $previewUrl }}" alt="Preview {{ strtolower($label) }}">
@@ -31,10 +30,7 @@
             <strong data-image-file-name>{{ $previewUrl ? 'Foto saat ini' : 'Belum ada foto' }}</strong>
             <span>JPG, PNG, atau WEBP. Maksimal 4 MB.</span>
         </div>
-        <div class="image-cropper-summary-actions">
-            <button type="button" class="image-cropper-action" data-image-select><x-lucide-upload aria-hidden="true" /> Pilih Foto</button>
-            <button type="button" class="image-cropper-camera-button" data-image-camera><x-lucide-camera aria-hidden="true" /> Ambil Foto</button>
-        </div>
+        <x-lucide-chevron-right class="image-cropper-summary-arrow" aria-hidden="true" />
     </div>
 
     <input id="{{ $inputId }}" name="{{ $name }}" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only" data-image-input>
@@ -52,6 +48,16 @@
                 <button type="button" class="image-cropper-close" data-image-close aria-label="Tutup editor foto"><x-lucide-x /></button>
             </div>
 
+            <div class="image-source-picker" data-image-source-picker>
+                <div class="image-drop-zone" data-image-drop-zone tabindex="0" role="button" aria-label="Pilih foto dari perangkat">
+                    <x-lucide-upload-cloud aria-hidden="true" />
+                    <strong>Tarik foto ke sini</strong>
+                    <span>atau klik untuk memilih file</span>
+                    <small>JPG, PNG, atau WEBP. Maksimal 4 MB.</small>
+                </div>
+                <button type="button" class="image-camera-link" data-image-camera><x-lucide-camera aria-hidden="true" /> Ambil Foto</button>
+            </div>
+
             <div class="image-cropper-stage" data-image-stage>
                 <img data-cropper-image alt="Atur area foto">
                 <div class="image-camera-stage" data-camera-stage hidden>
@@ -61,13 +67,7 @@
             </div>
 
             <div class="image-cropper-controls" data-cropper-controls>
-                <label for="{{ $inputId }}-ratio">Bentuk crop</label>
-                <select id="{{ $inputId }}-ratio" data-cropper-ratio>
-                    <option value="free">Bebas</option>
-                    <option value="1">Kotak (1:1)</option>
-                    <option value="0.75">Potret (3:4)</option>
-                    <option value="1.7777778">Lanskap (16:9)</option>
-                </select>
+                <span class="image-cropper-ratio-label">Crop 1:1</span>
                 <label for="{{ $inputId }}-zoom">Zoom</label>
                 <input id="{{ $inputId }}-zoom" type="range" min="-0.3" max="0.7" value="0" step="0.01" data-cropper-zoom>
                 <button type="button" class="image-cropper-text-button" data-cropper-reset>Atur Ulang</button>

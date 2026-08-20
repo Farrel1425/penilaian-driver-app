@@ -31,7 +31,7 @@ class DriverRequest extends FormRequest
             'sim_type' => ['nullable', 'string', 'max:50'],
             'sim_expired_at' => ['nullable', 'date'],
             'sim_photo' => ['nullable', 'string', 'max:255'],
-            'join_date' => ['nullable', 'date'],
+            'join_date' => ['required', 'date'],
             'status' => ['required', Rule::in([Driver::STATUS_ACTIVE, Driver::STATUS_INACTIVE])],
         ];
     }

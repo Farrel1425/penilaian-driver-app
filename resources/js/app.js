@@ -123,24 +123,26 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('[data-image-cropper]').forEach((field) => {
         const imageInput = field.querySelector('[data-image-input]');
         const cameraInput = field.querySelector('[data-camera-input]');
-        const selectButton = field.querySelector('[data-image-select]');
+        const pickerTrigger = field.querySelector('[data-image-open-picker]');
         const cameraButton = field.querySelector('[data-image-camera]');
         const modal = field.querySelector('[data-image-modal]');
         const cropImage = field.querySelector('[data-cropper-image]');
         const preview = field.querySelector('[data-image-preview]');
         const fileName = field.querySelector('[data-image-file-name]');
-        const ratio = field.querySelector('[data-cropper-ratio]');
         const zoom = field.querySelector('[data-cropper-zoom]');
         const controls = field.querySelector('[data-cropper-controls]');
         const cropperActions = field.querySelector('[data-cropper-actions]');
+        const stage = field.querySelector('[data-image-stage]');
         const cameraStage = field.querySelector('[data-camera-stage]');
         const cameraActions = field.querySelector('[data-camera-actions]');
         const cameraVideo = field.querySelector('[data-camera-video]');
         const cameraMessage = field.querySelector('[data-camera-message]');
+        const sourcePicker = field.querySelector('[data-image-source-picker]');
+        const dropZone = field.querySelector('[data-image-drop-zone]');
         let cropper;
         let stream;
 
-        if (!imageInput || !modal || !cropImage || !preview || !fileName || !ratio || !zoom) {
+        if (!imageInput || !modal || !cropImage || !preview || !fileName || !zoom) {
             return;
         }
 
@@ -163,7 +165,21 @@ document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('image-cropper-is-open');
         };
 
-        const selectedRatio = () => (ratio.value === 'free' ? Number.NaN : Number(ratio.value));
+        const selectedRatio = () => 1;
+
+        const openPicker = () => {
+            stopCamera();
+            cropper?.destroy();
+            cropper = undefined;
+            sourcePicker.hidden = false;
+            stage.hidden = true;
+            cropImage.hidden = true;
+            cameraStage.hidden = true;
+            cameraActions.hidden = true;
+            controls.hidden = true;
+            cropperActions.hidden = true;
+            openModal();
+        };
 
         const updatePreview = (file) => {
             const image = document.createElement('img');
@@ -186,12 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             stopCamera();
             cropper?.destroy();
+            sourcePicker.hidden = true;
+            stage.hidden = false;
             cameraStage.hidden = true;
             cameraActions.hidden = true;
             controls.hidden = false;
             cropperActions.hidden = false;
             cropImage.hidden = false;
-            ratio.value = field.dataset.defaultRatio || 'free';
             zoom.value = '0';
             openModal();
 
@@ -224,6 +241,8 @@ document.addEventListener('DOMContentLoaded', () => {
             cropper?.destroy();
             cropper = undefined;
             openModal();
+            sourcePicker.hidden = true;
+            stage.hidden = false;
             cropImage.hidden = true;
             cameraStage.hidden = false;
             cameraActions.hidden = false;
@@ -245,7 +264,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        selectButton?.addEventListener('click', () => imageInput.click());
+        pickerTrigger?.addEventListener('click', openPicker);
+        pickerTrigger?.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                openPicker();
+            }
+        });
+        dropZone?.addEventListener('click', () => imageInput.click());
+        dropZone?.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                imageInput.click();
+            }
+        });
+        ['dragenter', 'dragover'].forEach((eventName) => {
+            dropZone?.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                dropZone.classList.add('is-dragging');
+            });
+        });
+        ['dragleave', 'drop'].forEach((eventName) => {
+            dropZone?.addEventListener(eventName, (event) => {
+                event.preventDefault();
+                dropZone.classList.remove('is-dragging');
+            });
+        });
+        dropZone?.addEventListener('drop', (event) => {
+            openEditor(event.dataTransfer?.files?.[0]);
+        });
         cameraButton?.addEventListener('click', openCamera);
         imageInput.addEventListener('change', () => openEditor(imageInput.files?.[0]));
         cameraInput?.addEventListener('change', () => openEditor(cameraInput.files?.[0]));
@@ -275,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 'image/jpeg', 0.92);
         });
 
-        ratio.addEventListener('change', () => cropper?.setAspectRatio(selectedRatio()));
         zoom.addEventListener('input', () => cropper?.zoomTo(1 + Number(zoom.value)));
         field.querySelector('[data-cropper-reset]')?.addEventListener('click', () => {
             cropper?.reset();

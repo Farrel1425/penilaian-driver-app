@@ -1922,6 +1922,97 @@ button {
     font-size: 12px;
 }
 
+.image-cropper-summary {
+    cursor: pointer;
+    transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.image-cropper-summary:hover {
+    border-color: #7da0e7;
+    background: #f2f6ff;
+}
+
+.image-cropper-summary-arrow {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 auto;
+    color: #6d7f99;
+}
+
+.image-source-picker {
+    display: grid;
+    gap: 14px;
+    padding: 26px 22px;
+}
+
+.image-source-picker[hidden],
+.image-cropper-stage[hidden],
+.image-camera-stage[hidden],
+.image-cropper-controls[hidden],
+.image-cropper-dialog-actions[hidden],
+.image-cropper-camera-actions[hidden] {
+    display: none !important;
+}
+
+.image-drop-zone {
+    display: grid;
+    min-height: 220px;
+    place-content: center;
+    justify-items: center;
+    gap: 8px;
+    border: 1.5px dashed #aebfda;
+    border-radius: 9px;
+    background: #f8fbff;
+    color: #5d6f8b;
+    cursor: pointer;
+    text-align: center;
+    transition: border-color 160ms ease, background-color 160ms ease;
+}
+
+.image-drop-zone:hover,
+.image-drop-zone.is-dragging {
+    border-color: #2563eb;
+    background: #edf4ff;
+}
+
+.image-drop-zone > svg {
+    width: 34px;
+    height: 34px;
+    color: #2563eb;
+}
+
+.image-drop-zone strong {
+    color: #1f365b;
+    font-size: 14px;
+}
+
+.image-drop-zone span,
+.image-drop-zone small {
+    color: #73839b;
+    font-size: 13px;
+}
+
+.image-camera-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 4px;
+    border: 0;
+    background: transparent;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.image-camera-link svg {
+    width: 16px;
+    height: 16px;
+}
+
 .image-cropper-summary-actions {
     flex: 0 0 auto;
     gap: 8px;
@@ -2093,6 +2184,12 @@ button {
 }
 
 .image-cropper-controls label {
+    color: #475569;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.image-cropper-ratio-label {
     color: #475569;
     font-size: 12px;
     font-weight: 650;

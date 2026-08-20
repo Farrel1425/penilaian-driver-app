@@ -24,6 +24,7 @@ class ImageUploadTest extends TestCase
         $this->post(route('admin.drivers.store'), [
             'branch_id' => $branch->id,
             'full_name' => 'Driver Dengan Foto',
+            'join_date' => '2026-01-01',
             'photo' => UploadedFile::fake()->image('driver.jpg', 800, 1000),
             'status' => Driver::STATUS_ACTIVE,
         ])->assertRedirect();

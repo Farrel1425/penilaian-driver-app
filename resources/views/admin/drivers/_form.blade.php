@@ -14,6 +14,7 @@
             <option value="{{ $value }}" @selected(old('status', $driver->status ?? App\Models\Driver::STATUS_ACTIVE) === $value)>{{ $label }}</option>
         @endforeach
     </x-admin.select>
+    <x-admin.field label="Tanggal Bergabung" name="join_date" type="date" :value="optional($driver->join_date)->format('Y-m-d')" required />
     <x-admin.field label="Tempat Lahir" name="birth_place" :value="$driver->birth_place" />
     <x-admin.field label="Tanggal Lahir" name="birth_date" type="date" :value="optional($driver->birth_date)->format('Y-m-d')" />
     <x-admin.select label="Jenis Kelamin" name="gender">
@@ -23,17 +24,16 @@
     </x-admin.select>
     <x-admin.field label="Nomor HP" name="phone" :value="$driver->phone" />
     <x-admin.field label="Email" name="email" type="email" :value="$driver->email" />
-    <x-admin.image-cropper label="Foto Driver" name="photo" :value="$driver->photo" default-ratio="0.75" />
+    <x-admin.image-cropper label="Foto Driver" name="photo" :value="$driver->photo" />
     <x-admin.textarea label="Alamat" name="address" :value="$driver->address" />
 </div>
 
-<div class="form-section-title">Data SIM & Pekerjaan</div>
+<div class="form-section-title">Data SIM (Opsional)</div>
 <div class="form-grid">
     <x-admin.field label="Nomor SIM" name="sim_number" :value="$driver->sim_number" />
     <x-admin.field label="Jenis SIM" name="sim_type" :value="$driver->sim_type" />
     <x-admin.field label="Masa Berlaku SIM" name="sim_expired_at" type="date" :value="optional($driver->sim_expired_at)->format('Y-m-d')" />
     <x-admin.field label="Path Foto SIM" name="sim_photo" :value="$driver->sim_photo" />
-    <x-admin.field label="Tanggal Bergabung" name="join_date" type="date" :value="optional($driver->join_date)->format('Y-m-d')" />
 </div>
 <div class="form-actions">
     <a class="secondary-button" href="{{ route('admin.drivers.index') }}">Batal</a>

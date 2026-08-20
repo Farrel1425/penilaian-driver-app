@@ -32,7 +32,7 @@ class VehicleRequest extends FormRequest
             'passenger_capacity' => ['nullable', 'integer', 'min:1', 'max:100'],
             'acquisition_date' => ['nullable', 'date'],
             'acquisition_source' => ['nullable', 'string', 'max:255'],
-            'ownership_type' => ['nullable', 'string', 'max:100'],
+            'ownership_type' => ['nullable', Rule::in([Vehicle::OWNERSHIP_COMPANY, Vehicle::OWNERSHIP_RENTAL])],
             'contract_number' => ['nullable', 'string', 'max:255'],
             'contract_expired_at' => ['nullable', 'date'],
             'description' => ['nullable', 'string'],

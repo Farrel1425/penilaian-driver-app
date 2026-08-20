@@ -12,14 +12,18 @@
     <x-admin.field label="Bahan Bakar" name="fuel_type" :value="$vehicle->fuel_type" />
     <x-admin.field label="Transmisi" name="transmission" :value="$vehicle->transmission" />
     <x-admin.field label="Kapasitas Penumpang" name="passenger_capacity" type="number" :value="$vehicle->passenger_capacity" />
-    <x-admin.image-cropper label="Foto Kendaraan" name="photo" :value="$vehicle->photo" default-ratio="1.7777778" />
+    <x-admin.image-cropper label="Foto Kendaraan" name="photo" :value="$vehicle->photo" />
 </div>
 <div class="form-section-title">Informasi Operasional</div>
 <div class="form-grid">
     <x-admin.select label="Status" name="status" required>@foreach([App\Models\Vehicle::STATUS_ACTIVE => 'Aktif', App\Models\Vehicle::STATUS_INACTIVE => 'Nonaktif'] as $value => $label)<option value="{{ $value }}" @selected(old('status', $vehicle->status ?? App\Models\Vehicle::STATUS_ACTIVE) === $value)>{{ $label }}</option>@endforeach</x-admin.select>
     <x-admin.field label="Tanggal Perolehan" name="acquisition_date" type="date" :value="optional($vehicle->acquisition_date)->format('Y-m-d')" />
     <x-admin.field label="Sumber Pengadaan" name="acquisition_source" :value="$vehicle->acquisition_source" />
-    <x-admin.field label="Jenis Kepemilikan" name="ownership_type" :value="$vehicle->ownership_type" />
+    <x-admin.select label="Jenis Kepemilikan" name="ownership_type">
+        <option value="">Pilih jenis kepemilikan</option>
+        <option value="{{ App\Models\Vehicle::OWNERSHIP_COMPANY }}" @selected(old('ownership_type', $vehicle->ownership_type) === App\Models\Vehicle::OWNERSHIP_COMPANY)>Milik PT</option>
+        <option value="{{ App\Models\Vehicle::OWNERSHIP_RENTAL }}" @selected(old('ownership_type', $vehicle->ownership_type) === App\Models\Vehicle::OWNERSHIP_RENTAL)>Sewa</option>
+    </x-admin.select>
     <x-admin.field label="Nomor Kontrak" name="contract_number" :value="$vehicle->contract_number" />
     <x-admin.field label="Masa Berlaku Kontrak" name="contract_expired_at" type="date" :value="optional($vehicle->contract_expired_at)->format('Y-m-d')" />
     <x-admin.textarea label="Keterangan" name="description" :value="$vehicle->description" />

@@ -75,6 +75,25 @@ class MasterDataTest extends TestCase
         $this->assertFalse(\Illuminate\Support\Facades\Schema::hasColumn('drivers', 'vehicle_id'));
     }
 
+    public function test_driver_join_date_is_required_while_sim_details_are_optional(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $branch = Branch::factory()->create();
+
+        $this->post(route('admin.drivers.store'), [
+            'branch_id' => $branch->id,
+            'full_name' => 'Driver Tanpa Tanggal Bergabung',
+            'status' => Driver::STATUS_ACTIVE,
+        ])->assertSessionHasErrors('join_date');
+
+        $this->post(route('admin.drivers.store'), [
+            'branch_id' => $branch->id,
+            'full_name' => 'Driver Dengan Tanggal Bergabung',
+            'join_date' => '2026-01-01',
+            'status' => Driver::STATUS_ACTIVE,
+        ])->assertRedirect();
+    }
+
     public function test_admin_can_create_vehicle_and_regenerate_qr_token(): void
     {
         $this->actingAs(User::factory()->create());
@@ -110,6 +129,20 @@ class MasterDataTest extends TestCase
         $this->patch(route('admin.vehicles.regenerate-qr', $vehicle))->assertRedirect();
 
         $this->assertNotSame($oldToken, $vehicle->fresh()->qr_token);
+    }
+
+    public function test_vehicle_ownership_is_limited_to_company_or_rental(): void
+    {
+        $this->actingAs(User::factory()->create());
+        $branch = Branch::factory()->create();
+
+        $this->post(route('admin.vehicles.store'), [
+            'branch_id' => $branch->id,
+            'police_number' => 'DK 6789 CD',
+            'brand' => 'Toyota',
+            'ownership_type' => 'personal',
+            'status' => Vehicle::STATUS_ACTIVE,
+        ])->assertSessionHasErrors('ownership_type');
     }
     public function test_admin_master_data_pages_can_be_rendered(): void
     {

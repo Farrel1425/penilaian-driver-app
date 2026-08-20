@@ -40,6 +40,8 @@ class Vehicle extends Model
 
     public const STATUS_ACTIVE = 'active';
     public const STATUS_INACTIVE = 'inactive';
+    public const OWNERSHIP_COMPANY = 'owned';
+    public const OWNERSHIP_RENTAL = 'rental';
 
     protected static function booted(): void
     {
